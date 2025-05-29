@@ -1,0 +1,7 @@
+{
+  "name": "SipenaApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

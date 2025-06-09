@@ -1,0 +1,57 @@
+<ion-content [fullscreen]="true">
+  <div class="login-wrapper">
+    <ion-card class="login-card">
+      <ion-card-content>
+
+        <!-- Logo dan Heading dipindah ke dalam card -->
+        <img src="assets/logo.png" alt="logo" class="logo" />
+        <h2>Masuk ke Akun Anda</h2>
+
+        <ion-item>
+          <ion-input
+            id="emailInput"
+            [(ngModel)]="email"
+            type="email"
+            label="Email"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Masukkan Email Anda"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            id="passwordInput"
+            [(ngModel)]="password"
+            [type]="passwordType"
+            label="Password"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Masukkan Password Anda"
+          ></ion-input>
+          <ion-icon
+            [name]="passwordIcon"
+            slot="end"
+            class="toggle-pa  ssword-icon"
+            (click)="togglePasswordVisibility()"
+          ></ion-icon>
+        </ion-item>
+
+
+        <ion-checkbox [(ngModel)]="isAgreed">
+          Saya setuju dengan syarat dan ketentuan
+        </ion-checkbox>
+
+        <ion-button
+          id="submit-button"
+          (click)="doSubmit()"
+          expand="block"  
+          shape="round"
+          class="login-btn"
+        > 
+          Masuk
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

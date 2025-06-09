@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aktivasi Akun</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Token</ion-label>
+    <ion-input [(ngModel)]="token" type="text" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Password</ion-label>
+    <ion-input [(ngModel)]="password" type="password" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Konfirmasi Password</ion-label>
+    <ion-input [(ngModel)]="password_confirmation" type="password" required></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="setPassword()">Aktivasi</ion-button>
+</ion-content>

@@ -1,0 +1,169 @@
+ion-content {
+  --background: #003b6f;
+  padding: 16px;
+  padding-top: 100px;
+}
+
+ion-header {
+  --background: #ffffff;
+  position: relative;
+  z-index: 2;
+}
+
+.header-curve {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  background: #ffffff;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.sipena-logo {
+  height: 115px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-icon {
+  font-size: 20px;
+  color: #083f73;
+  margin-right: 8px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-searchbar {
+  --background: #27547f;
+  --color: white;
+  --icon-color: white;
+  border-radius: 15px;
+  margin-top: 110px;
+}
+
+.clock-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 300px;
+}
+
+.clock-time {
+  font-size: 32px;
+  font-weight: bold;
+  color: #003b6f;
+}
+
+.clock-date {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.menu-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 30px;
+}
+
+.form-wrapper {
+  padding: 0 16px;
+}
+
+.icon-col {
+  text-align: center;
+  color: #000;
+
+  .circle-icon {
+    background: #083f73;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 28px;
+      color: white;
+    }
+  }
+
+  p {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+}
+
+.info-card {
+  margin-top: 16px;
+  border-radius: 12px;
+  ion-icon {
+    font-size: 24px;
+  }
+  ion-label h2 {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  ion-label p {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+
+.footer-toolbar {
+  bottom: 0;
+  width: 100%;
+  --background: #ffffff;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 6px 0;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer-icon {
+  padding: 10px;
+  border-radius: 12px; // sedikit membulat agar tetap modern
+  transition: background 0.2s ease;
+  
+  ion-icon {
+    font-size: 22px;
+    color: #083f73;
+    transition: color 0.2s ease;
+  }
+
+  &:hover,
+  &:active {
+    background: rgba(8, 63, 115, 0.1); // soft highlight saat ditekan
+  }
+}
+
+

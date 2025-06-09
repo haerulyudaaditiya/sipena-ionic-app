@@ -1,0 +1,152 @@
+ion-content {
+  --background: #003b6f;
+  padding: 16px;
+  padding-top: 16px; 
+  padding-bottom: 80px;
+}
+  
+ion-header {
+    --background: #ffffff;
+    position: relative;
+    z-index: 2;
+}
+
+.centered-toolbar {
+  position: relative;
+}
+
+.centered-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slip-container {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #000;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.logo {
+  width: 100px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.alamat {
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.slip-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
+
+.gaji-table {
+  margin: 0 auto;
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.gaji-table td {
+  padding: 4px 8px;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.left, .right {
+  width: 48%;
+  border: 1px solid #000;
+  padding: 10px;
+}
+
+.left p, .right p {
+  margin: 4px 0;
+}
+
+.gaji-bersih {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.gaji-bersih span {
+  font-size: 18px;
+  color: #000;
+}
+
+.signature {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding: 0 30px;
+}
+
+.signature div {
+  text-align: center;
+  width: 40%;
+}
+
+.footer-toolbar {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  --background: #ffffff;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 6px 0;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.footer-icon {
+  --padding-start: 0;
+  --padding-end: 0;
+  --background-hover: rgba(0, 59, 111, 0.1); // saat tap
+  --border-radius: 8px;
+  --box-shadow: none;
+  --color: #083f73;
+  font-size: 20px;
+
+  ion-icon {
+    font-size: 24px;
+    color: #083f73;
+  }
+
+  width: 60px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

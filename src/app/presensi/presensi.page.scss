@@ -1,0 +1,118 @@
+ion-content {
+  --background: #003b6f;
+  padding: 16px;
+  padding-top: 16px; 
+  padding-bottom: 80px; 
+}
+  
+ion-header {
+    --background: #ffffff;
+    position: relative;
+    z-index: 2;
+}
+
+.centered-toolbar {
+  position: relative;
+}
+
+.centered-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.form-wrapper {
+  padding: 0 16px;
+  margin-top: 20px; 
+}
+
+.menu-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 0 20px auto; // tengah horizontal
+}
+
+.submit-button {
+  margin-top: 16px;
+  padding: 12px 16px; /* Padding agar tombol lebih besar dan mudah ditekan */
+  font-size: 16px;
+}
+
+ion-card {
+  margin-bottom: 100px; /* Memberikan ruang antara card presensi dan tombol kirim */
+}
+
+ion-card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.icon-col {
+    text-align: center;
+    color: #000;
+
+    .circle-icon {
+        background: #083f73;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+        font-size: 28px;
+        color: white;
+        }
+    }
+
+    p {
+        font-size: 13px;
+        margin-top: 8px;
+    }
+}
+
+.footer-toolbar {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  --background: #ffffff;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 6px 0;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.footer-icon {
+  --padding-start: 0;
+  --padding-end: 0;
+  --background-hover: rgba(0, 59, 111, 0.1); // saat tap
+  --border-radius: 8px;
+  --box-shadow: none;
+  --color: #083f73;
+  font-size: 20px;
+
+  ion-icon {
+    font-size: 24px;
+    color: #083f73;
+  }
+
+  width: 60px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,20 +1,18 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<!-- Splash Screen -->
+<div *ngIf="showSplash" class="splash-screen">
+  <div class="splash-content">
+    <img src="assets/logo.png" class="splash-logo" alt="SIPENA Logo" />
+    <!-- <ion-spinner name="crescent" class="spinner"></ion-spinner> -->
   </div>
+</div>
+
+<!-- Konten halaman utama -->
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>Beranda</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Konten utama kamu -->
 </ion-content>

@@ -1,0 +1,88 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Riwayat</div>
+    <ion-buttons slot="end">
+      <ion-button id="filter-trigger" fill="clear">
+        <ion-icon name="calendar-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="search-wrapper">
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="applySearch()"
+      placeholder="Cari status, keterangan, atau tanggal..."
+      animated
+      show-clear-button="focus"
+    ></ion-searchbar>
+  </div>
+
+  <div class="history-section">
+    <ion-card *ngFor="let item of filteredRiwayat">
+      <ion-card-content>
+        <div class="history-label">
+          <ion-chip color="primary" outline>
+            <ion-label>{{ item.jenis === 'absensi' ? 'Absensi' : 'Pengajuan' }}</ion-label>
+          </ion-chip>
+          <span>{{ item.tanggal | date:'dd MMM yyyy' }}</span>
+        </div>
+        <div class="history-content">
+          <p *ngIf="item.jenis === 'absensi'">
+            <strong>Status:</strong> {{ item.status }}
+          </p>
+          <p *ngIf="item.jenis === 'pengajuan'">
+            {{ item.keterangan }}<br />
+            <strong>Tanggal:</strong> {{ item.startDate | date:'dd/MM/yyyy' }} - {{ item.endDate | date:'dd/MM/yyyy' }}<br />
+            <strong>Status:</strong> {{ item.status }}
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+  <!-- Filter Popover -->
+  <ion-popover trigger="filter-trigger" triggerAction="click" side="bottom" alignment="end">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Bulan</ion-label>
+          <ion-select [(ngModel)]="selectedMonth" (ionChange)="filterRiwayat()">
+            <ion-select-option *ngFor="let month of months" [value]="month.value">
+              {{ month.label }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Tahun</ion-label>
+          <ion-select [(ngModel)]="selectedYear" (ionChange)="filterRiwayat()">
+            <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+</ion-content>
+
+<!-- Floating Footer -->
+<ion-toolbar class="footer-toolbar">
+  <ion-buttons class="footer-menu" expand="block">
+    <ion-button fill="clear" class="footer-icon" (click)="goTo('beranda')">
+      <ion-icon name="home-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" class="footer-icon" (click)="goTo('perusahaan')">
+      <ion-icon name="business-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" class="footer-icon" (click)="goTo('akun')">
+      <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

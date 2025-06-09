@@ -1,0 +1,77 @@
+<ion-header *ngIf="showHeader" [translucent]="true">
+  <div class="header-curve">
+    <img src="assets/logo2.png" alt="SIPENA Logo" class="sipena-logo" (click)="goTo('beranda')" />
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <ion-icon name="notifications-outline" class="header-icon" (click)="goTo('notification')"></ion-icon>
+      <!-- Profil -->
+      <div class="avatar" (click)="goTo('profile', $event)">
+        <img [src]="user.photo" />
+      </div>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding" scrollEvents="true" (ionScroll)="onScroll($event)">
+  <!-- Search Bar -->
+  <ion-searchbar placeholder="Search" mode="ios" class="custom-searchbar"></ion-searchbar>
+
+  <!-- Clock -->
+  <div class="form-wrapper">
+    <div class="clock-card">
+      <div class="clock-time">{{ currentTime }}</div>
+      <div class="clock-date">{{ currentDate }}</div>
+    </div>
+
+    <!-- Menu Card -->
+    <ion-card class="menu-card">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" class="icon-col" (click)="goTo('presensi')">
+            <div class="circle-icon"><ion-icon name="alarm-outline"></ion-icon></div>
+            <p>Presensi</p>
+          </ion-col>
+          <ion-col size="6" class="icon-col" (click)="goTo('cuti')">
+            <div class="circle-icon"><ion-icon name="document-text-outline"></ion-icon></div>
+            <p>Ajukan Cuti</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6" class="icon-col" (click)="goTo('gaji')">
+            <div class="circle-icon"><ion-icon name="wallet-outline"></ion-icon></div>
+            <p>Slip Gaji & Tunjangan</p>
+          </ion-col>
+          <ion-col size="6" class="icon-col" (click)="goTo('riwayat')">
+            <div class="circle-icon"><ion-icon name="bar-chart-outline"></ion-icon></div>
+            <p>Riwayat Absensi & Pengajuan</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card class="info-card">
+      <ion-item lines="none">
+        <ion-icon name="megaphone-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h2>Pengumuman</h2>
+          <p>Hari Jumat, 31 Mei 2025 libur nasional – Hari Raya Waisak</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+</ion-content>
+
+<!-- Floating Footer -->
+<ion-toolbar class="footer-toolbar">
+  <ion-buttons class="footer-menu" expand="block">
+    <div class="footer-icon" (click)="goTo('beranda')">
+      <ion-icon name="home-outline"></ion-icon>
+    </div>
+    <div class="footer-icon" (click)="goTo('perusahaan')">
+      <ion-icon name="business-outline"></ion-icon>
+    </div>
+    <div class="footer-icon" (click)="goTo('akun')">
+      <ion-icon name="person-outline"></ion-icon>
+    </div>
+  </ion-buttons>
+</ion-toolbar>

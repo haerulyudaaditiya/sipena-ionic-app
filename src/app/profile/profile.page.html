@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Profil</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-container">
+    <div class="card">
+      <div class="avatar-wrapper">
+        <ion-avatar class="avatar">
+          <img [src]="user.photo" alt="Avatar"/>
+        </ion-avatar>
+        <h2 class="name">{{ nama }}</h2>
+        <p class="position">{{ jabatan }}</p>
+      </div>
+
+      <div class="info-list">
+        <div class="info-item">
+          <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+          <div class="info-content">
+            <label>Status Kepegawaian</label>
+            <span>{{ statusKepegawaian }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <div class="info-content">
+            <label>Email</label>
+            <span>{{ email }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <ion-icon name="call-outline" slot="start"></ion-icon>
+          <div class="info-content">
+            <label>Nomor Telepon</label>
+            <span>{{ noTelepon }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          <div class="info-content">
+            <label>Keterangan SP</label>
+            <span>{{ keteranganSP }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

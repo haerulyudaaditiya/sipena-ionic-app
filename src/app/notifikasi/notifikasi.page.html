@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Notifikasi</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="notification-content" [fullscreen]="true">
+  <div *ngIf="notifikasiList.length > 0; else tidakAdaNotif">
+    <ion-card *ngFor="let notif of notifikasiList" class="notif-card">
+      <ion-card-header>
+        <ion-card-title>{{ notif.judul }}</ion-card-title>
+        <ion-card-subtitle>{{ formatTanggal(notif.tanggal) }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        {{ notif.isi }}
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <ng-template #tidakAdaNotif>
+    <div class="no-notif">Tidak ada notifikasi.</div>
+  </ng-template>
+</ion-content>
+

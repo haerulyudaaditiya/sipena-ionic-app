@@ -1,9 +1,14 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
   appName: 'SipenaApp',
-  webDir: 'www'
+  webDir: 'www',
+  plugins: {
+    App: {
+      urlScheme: 'sipena',  // Custom scheme for your app (myapp://)
+    },
+  },
 };
 
 export default config;

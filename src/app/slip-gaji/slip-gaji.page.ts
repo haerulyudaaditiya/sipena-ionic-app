@@ -186,7 +186,19 @@ export class SlipGajiPage implements OnInit {
   }
 
   goTo(route: string) {
-    this.router.navigate([`/${route}`]);
+    switch (route) {
+      case 'perusahaan':
+        this.router.navigate(['/company-profile']);
+        break;
+      case 'beranda':
+        this.router.navigate(['/dashboard']);
+        break;
+      case 'akun':
+        this.router.navigate(['/akun']);
+        break;
+      default:
+        console.warn('Rute tidak dikenali:', route);
+    }
   }
 
   goBack() {

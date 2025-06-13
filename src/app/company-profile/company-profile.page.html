@@ -1,0 +1,103 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Company Profile</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-content">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <img src="assets/logo.png" alt="Logo PT. Jaya Berkah Utama" class="company-logo" />
+      <h1 class="company-name">PT. Jaya Berkah Utama</h1>
+      <p class="company-tagline">Bersama Menuju Kesuksesan</p>
+    </div>
+
+    <!-- Tentang Perusahaan -->
+    <ion-card class="about-card" lines="none">
+      <ion-card-header>
+        <ion-card-title>Tentang Kami</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          PT. Jaya Berkah Utama adalah perusahaan yang bergerak di bidang jasa dan teknologi, 
+          berkomitmen memberikan solusi terbaik kepada klien kami. Dengan pengalaman bertahun-tahun 
+          dan tim profesional, kami terus berkembang menjadi perusahaan yang handal dan terpercaya.
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Visi dan Misi -->
+    <ion-card class="vision-mission-card" lines="none">
+      <ion-card-header>
+        <ion-card-title>Visi</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Menjadi perusahaan jasa dan teknologi terdepan di Indonesia.</p>
+      </ion-card-content>
+
+      <ion-card-header>
+        <ion-card-title>Misi</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li>Mengutamakan kepuasan pelanggan.</li>
+          <li>Menjaga profesionalisme dan integritas.</li>
+          <li>Inovasi berkelanjutan dalam setiap lini bisnis.</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lokasi Perusahaan -->
+    <ion-card class="map-card" lines="none">
+      <ion-card-header>
+        <ion-card-title>Lokasi Kami</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.385380782964!2d106.82715361476848!3d-6.211544662532155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e2ae7a81cb%3A0x4564a8822e69fc62!2sMonas!5e0!3m2!1sid!2sid!4v1718113157091!5m2!1sid!2sid"
+            width="100%"
+            height="200"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Kontak Perusahaan -->
+    <ion-card class="contact-card" lines="none">
+      <ion-card-header>
+        <ion-card-title>Kontak Kami</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Alamat:</strong> Jl. Jendral Sudirman RT. 014 RW. 004 Ardiarsa Kec. Karawang Barat<br>Kabupaten Karawang – Jawa Barat 43289</p>
+        <p><strong>Email:</strong> info&#64;jayaberkahutama.co.id</p>
+        <p><strong>Telepon:</strong> (021) 1234-5678</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<!-- Floating Footer -->
+<ion-toolbar class="footer-toolbar">
+  <ion-buttons class="footer-menu" expand="block">
+    <ion-button fill="clear" class="footer-icon" (click)="goTo('beranda')">
+      <ion-icon name="home-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" class="footer-icon" (click)="goTo('perusahaan')">
+      <ion-icon name="business-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" class="footer-icon" (click)="goTo('akun')">
+      <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

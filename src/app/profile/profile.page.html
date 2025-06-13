@@ -12,6 +12,7 @@
 <ion-content [fullscreen]="true">
   <div class="profile-container">
     <div class="card">
+
       <div class="avatar-wrapper">
         <ion-avatar class="avatar">
           <img [src]="user.photo" alt="Avatar"/>
@@ -21,6 +22,22 @@
       </div>
 
       <div class="info-list">
+        <div class="info-item">
+          <ion-icon name="card-outline" slot="start"></ion-icon>
+          <div class="info-content">
+            <label>NIK</label>
+            <span>{{ nik }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <ion-icon name="document-outline" slot="start"></ion-icon>
+          <div class="info-content">
+            <label>NPWP</label>
+            <span>{{ npwp }}</span>
+          </div>
+        </div>
+
         <div class="info-item">
           <ion-icon name="briefcase-outline" slot="start"></ion-icon>
           <div class="info-content">

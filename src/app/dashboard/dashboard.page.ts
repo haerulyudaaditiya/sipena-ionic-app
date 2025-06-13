@@ -67,7 +67,7 @@ export class DashboardPage implements OnInit, OnDestroy {
       cuti: '/form-cuti',
       gaji: '/slip-gaji',
       riwayat: '/riwayat',
-      perusahaan: '/about',
+      perusahaan: '/company-profile',
       beranda: '/dashboard',
       akun: '/akun'
     };

@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Tentang Aplikasi</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="page-content">
+    <div class="about-app">
+      <img src="assets/logo.png" alt="App Icon" class="app-icon" />
+      <h2 class="app-name">SIPENA</h2>
+      <p class="app-version">Versi 1.0.0</p>
+      <p class="app-description">
+        SIPENA adalah aplikasi mobile resmi dari PT. Jaya Berkah Utama yang memudahkan karyawan untuk mengakses slip gaji, informasi perusahaan, permohonan cuti, dan berbagai layanan internal lainnya secara cepat dan aman.
+      </p>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Fitur Utama</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ul>
+            <li>Presensi Karyawan</li>
+            <li>Unduh Slip Gaji</li>
+            <li>Ajukan Cuti Online</li>
+            <li>Pusat Bantuan</li>
+          </ul>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Kontak & Bantuan</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Email: support&#64;jayaberkahutama.co.id</p>
+          <p>Telepon: +62 812 3456 7890</p>
+          <p>Website: <a href="https://www.jayaberkahutama.co.id" target="_blank">jayaberkahutama.co.id</a></p>
+        </ion-card-content>
+      </ion-card>
+
+      <p class="disclaimer">
+        © 2025 PT. Jaya Berkah Utama. Semua hak dilindungi undang-undang.
+      </p>
+    </div>
+  </div>
+</ion-content>

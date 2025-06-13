@@ -1,0 +1,151 @@
+ion-content {
+  --background: linear-gradient(180deg, #003b6f 0%, #005792 100%);
+  padding: 16px;
+  padding-top: 16px; 
+  padding-bottom: 80px; 
+  color: #ffffff;
+}
+
+.page-content {
+  padding-bottom: 100px; // beri jarak ekstra agar tidak mentok dengan footer
+}
+
+.hero-section {
+  text-align: center;
+  color: #fff;
+  padding: 40px 20px 20px;
+
+  .company-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .company-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+  }
+
+  .company-tagline {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+}
+
+ion-card {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.8s ease forwards;
+  background: #ffffff;
+  color: #333;
+
+  ion-card-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  ion-card-content {
+    font-size: 14px;
+
+    ul {
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.centered-toolbar {
+  position: relative;
+}
+
+.centered-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.map-card, .contact-card {
+  margin: 16px;
+  border-radius: 16px;
+  animation: fadeInUp 1s ease forwards;
+  background: #ffffff;
+  color: #333;
+
+  ion-card-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  ion-card-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+.map-container {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.footer-toolbar {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  --background: #ffffff;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 6px 0;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.footer-icon {
+  --padding-start: 0;
+  --padding-end: 0;
+  --background-hover: rgba(0, 59, 111, 0.1);
+  --border-radius: 8px;
+  --box-shadow: none;
+  --color: #083f73;
+  font-size: 20px;
+
+  ion-icon {
+    font-size: 24px;
+    color: #083f73;
+  }
+
+  width: 60px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

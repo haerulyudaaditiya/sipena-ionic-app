@@ -12,6 +12,7 @@ export class RiwayatPage implements OnInit {
   selectedMonth: string = new Date().getMonth().toString(); // default bulan sekarang
   selectedYear: number = new Date().getFullYear();
   months = [
+    { value: '-1', label: 'All Time' },
     { value: '0', label: 'Januari' },
     { value: '1', label: 'Februari' },
     { value: '2', label: 'Maret' },
@@ -64,37 +65,68 @@ export class RiwayatPage implements OnInit {
   }
 
   filterRiwayat() {
-    const filtered = this.allData.filter(item => {
-      const date = new Date(item.tanggal);
-      return (
-        date.getMonth().toString() === this.selectedMonth &&
-        date.getFullYear() === this.selectedYear
-      );
+    let filtered = this.allData;
+
+    if (this.selectedMonth !== '-1') {
+      filtered = filtered.filter(item => {
+        const date = new Date(item.tanggal);
+        return date.getMonth().toString() === this.selectedMonth;
+      });
+    }
+
+    if (this.selectedYear !== -1) {
+      filtered = filtered.filter(item => {
+        const date = new Date(item.tanggal);
+        return date.getFullYear() === this.selectedYear;
+      });
+    }
+
+    this.riwayatGabungan = filtered.sort((a, b) => {
+      const dateA = new Date(this.getSortDate(a));
+      const dateB = new Date(this.getSortDate(b));
+      return dateB.getTime() - dateA.getTime();
     });
 
-    this.riwayatGabungan = filtered.sort((a, b) => new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime());
-
-    this.applySearch(); // Apply search after filter
+    this.applySearch();
   }
+
+  getSortDate(item: any): string {
+    if (item.jenis === 'pengajuan') {
+      return item.startDate || item.tanggal;
+    }
+    return item.tanggal;
+  }
+
 
   applySearch() {
     const term = this.searchTerm.toLowerCase();
 
     this.filteredRiwayat = this.riwayatGabungan.filter(item => {
       const tanggal = new Date(item.tanggal).toLocaleDateString('id-ID', {
-        day: '2-digit', month: 'short', year: 'numeric',
+        day: '2-digit', month: 'long', year: 'numeric',
       });
 
-      const text = `${item.status || ''} ${item.keterangan || ''} ${tanggal}`.toLowerCase();
+      const combinedText = [
+        item.status,
+        item.keterangan,
+        tanggal,
+        item.jenis,
+        item.startDate,
+        item.endDate
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
 
-      return text.includes(term);
+      return combinedText.includes(term);
     });
   }
+
 
   goTo(route: string) {
     switch (route) {
       case 'perusahaan':
-        this.router.navigate(['/about']);
+        this.router.navigate(['/company-profile']);
         break;
       case 'beranda':
         this.router.navigate(['/dashboard']);

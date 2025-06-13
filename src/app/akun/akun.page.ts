@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AlertController, NavController } from '@ionic/angular';
 
 
@@ -14,7 +15,8 @@ export class AkunPage implements OnInit {
   constructor(
     private alertCtrl: AlertController,
     private navCtrl: NavController,
-    private router : Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit() {}
@@ -79,7 +81,7 @@ export class AkunPage implements OnInit {
   goTo(route: string) {
     switch (route) {
       case 'perusahaan':
-        this.router.navigate(['/about']);
+        this.router.navigate(['/company-profile']);
         break;
       case 'beranda':
         this.router.navigate(['/dashboard']);
@@ -90,6 +92,10 @@ export class AkunPage implements OnInit {
       default:
         console.warn('Rute tidak dikenali:', route);
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
 

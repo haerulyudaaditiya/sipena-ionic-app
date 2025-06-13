@@ -52,9 +52,13 @@ const routes: Routes = [
     loadChildren: () => import('./akun/akun.module').then( m => m.AkunPageModule)
   },
   {
-    path: 'activation',
-    loadChildren: () => import('./activation/activation.module').then( m => m.ActivationPageModule)
+    path: 'company-profile',
+    loadChildren: () => import('./company-profile/company-profile.module').then( m => m.CompanyProfilePageModule)
   },
+  {
+    path: 'about',
+    loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
+  }
 ];
 
 @NgModule({

@@ -13,6 +13,11 @@ import { Location } from '@angular/common';
 export class GantiPasswordPage implements OnInit {
   passwordForm: FormGroup;
 
+  // Tambahkan variabel ini
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+
   constructor(
     private router: Router,
     private fb: FormBuilder,

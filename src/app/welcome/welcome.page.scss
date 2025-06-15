@@ -1,0 +1,52 @@
+ion-content {
+  --background: #f6f9ff;
+}
+
+.welcome-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  gap: 20px;
+  padding: 30px;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #003b6f;
+  font-size: 20px;
+  margin-top: 0;
+}
+
+ul {
+  text-align: left;
+  padding-left: 20px;
+  color: #333;
+  font-size: 14px;
+}
+
+.terms-card {
+  width: 100%;
+  font-size: 14px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.disclaimer {
+  font-size: 13px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.disclaimer a {
+  color: #007aff;
+  text-decoration: none;
+}

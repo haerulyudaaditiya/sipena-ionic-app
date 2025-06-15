@@ -5,7 +5,7 @@ import { Platform, ToastController } from '@ionic/angular';
 
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
-import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+
 
 declare var html2pdf: any;
 
@@ -14,7 +14,7 @@ declare var html2pdf: any;
   templateUrl: './slip-gaji.page.html',
   styleUrls: ['./slip-gaji.page.scss'],
   standalone: false,
-  providers: [File, FileOpener, AndroidPermissions]
+  providers: [File, FileOpener]
 })
 export class SlipGajiPage implements OnInit {
   months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -30,27 +30,10 @@ export class SlipGajiPage implements OnInit {
     private file: File,
     private fileOpener: FileOpener,
     private toastCtrl: ToastController,
-    private androidPermissions: AndroidPermissions
   ) {}
 
    ngOnInit() {
-    this.platform.ready().then(() => {
-      if (this.platform.is('android')) {
-        this.requestStoragePermission();
-      }
-    });
-  }
 
-  async requestStoragePermission() {
-    const status = await this.androidPermissions.checkPermission(
-      this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
-    );
-    if (!status.hasPermission) {
-      await this.androidPermissions.requestPermissions([
-        this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE,
-        this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE,
-      ]);
-    }
   }
 
   async generateAndOpenPDF() {
@@ -86,25 +69,6 @@ export class SlipGajiPage implements OnInit {
       this.showToast('Gagal membuat atau membuka file PDF.');
     } finally {
       this.slipVisible = false;
-    }
-  }
-
-  async checkPermissions() {
-    try {
-      const result = await this.androidPermissions.checkPermission(
-        this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
-      );
-      if (!result.hasPermission) {
-        await this.androidPermissions.requestPermissions([
-          this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE,
-          this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
-        ]);
-      }
-    } catch {
-      await this.androidPermissions.requestPermissions([
-        this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE,
-        this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
-      ]);
     }
   }
 
@@ -187,11 +151,11 @@ export class SlipGajiPage implements OnInit {
 
   goTo(route: string) {
     switch (route) {
-      case 'perusahaan':
-        this.router.navigate(['/company-profile']);
-        break;
       case 'beranda':
         this.router.navigate(['/dashboard']);
+        break;
+      case 'presensi':
+        this.router.navigate(['/presensi']);
         break;
       case 'akun':
         this.router.navigate(['/akun']);

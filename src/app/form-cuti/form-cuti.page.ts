@@ -276,11 +276,11 @@ export class FormCutiPage implements OnInit {
 
   goTo(route: string) {
     switch (route) {
-      case 'perusahaan':
-        this.router.navigate(['/company-profile']);
-        break;
       case 'beranda':
         this.router.navigate(['/dashboard']);
+        break;
+      case 'presensi':
+        this.router.navigate(['/presensi']);
         break;
       case 'akun':
         this.router.navigate(['/akun']);

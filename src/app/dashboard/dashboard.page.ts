@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { filter } from 'rxjs/operators';
 import { ProfilePopoverComponent } from '../profile-popover/profile-popover/profile-popover.component'; 
 
 
@@ -15,6 +16,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     photo: 'https://i.pravatar.cc/150?img=12'
   };
 
+  activeRoute: string = '';
   showHeader: boolean = true;
   currentTime: string = '';
   currentDate: string = '';
@@ -23,7 +25,13 @@ export class DashboardPage implements OnInit, OnDestroy {
   private lastScrollTop: number = 0;
   private intervalId: any;
 
-  constructor(private router: Router, private popoverCtrl: PopoverController) {}
+  constructor(private router: Router, private popoverCtrl: PopoverController) {
+    this.router.events
+    .pipe(filter((event) => event instanceof NavigationEnd))
+    .subscribe((event: NavigationEnd) => {
+      this.activeRoute = (event as NavigationEnd).urlAfterRedirects;
+    });
+  }
 
   ngOnInit() {
     this.updateTime();
@@ -67,7 +75,6 @@ export class DashboardPage implements OnInit, OnDestroy {
       cuti: '/form-cuti',
       gaji: '/slip-gaji',
       riwayat: '/riwayat',
-      perusahaan: '/company-profile',
       beranda: '/dashboard',
       akun: '/akun'
     };

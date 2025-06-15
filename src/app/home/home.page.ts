@@ -13,11 +13,15 @@ export class HomePage implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    setTimeout(() => {
+     setTimeout(() => {
       this.showSplash = false;
 
-      // Redirect ke login setelah splash
-      this.router.navigateByUrl('/login');
-    }, 3000); // delay 2 detik
+      const isAgreed = localStorage.getItem('isAgreed');
+      if (isAgreed === 'true') {
+        this.router.navigateByUrl('/login');
+      } else {
+        this.router.navigateByUrl('/welcome');
+      }
+    }, 5000); // 5 detik
   }
 }

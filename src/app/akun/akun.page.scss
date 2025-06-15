@@ -1,7 +1,14 @@
+ion-content {
+  padding-top: env(safe-area-inset-top);
+  --padding: 16px;
+  --padding-bottom: 20px; // Sesuaikan agar konten tidak tertutup footer
+}
+
 ion-header {
-    --background: #ffffff;
-    position: relative;
-    z-index: 2;
+  padding-top: env(safe-area-inset-top);
+  --background: #ffffff;
+  position: relative;
+  z-index: 2;
 }
 
 .centered-toolbar {
@@ -64,7 +71,6 @@ ion-header {
 }
 
 .logout-footer {
-  position: sticky;
   bottom: 0;
   background: #ffffff;
   padding: 1rem;
@@ -93,9 +99,8 @@ ion-header {
 
 
 .footer-toolbar {
-  position: fixed;
   bottom: 0;
-  width: 100vw;
+  width: 100%;
   --background: #ffffff;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -105,26 +110,27 @@ ion-header {
 .footer-menu {
   display: flex;
   justify-content: space-around;
-  width: 100%;
 }
 
 .footer-icon {
-  --padding-start: 0;
-  --padding-end: 0;
-  --background-hover: rgba(0, 59, 111, 0.1); // saat tap
-  --border-radius: 8px;
-  --box-shadow: none;
-  --color: #083f73;
-  font-size: 20px;
+  padding: 10px;
+  border-radius: 12px; // sedikit membulat agar tetap modern
+  transition: background 0.2s ease;
+  
+  ion-icon {
+    font-size: 22px;
+    color: #083f73;
+    transition: color 0.2s ease;
+  }
+}
+
+.footer-icon.active {
+  background: rgba(8, 63, 115, 0.15);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
 
   ion-icon {
-    font-size: 24px;
-    color: #083f73;
+    color: #003b6f;
+    font-weight: bold;
   }
-
-  width: 60px;
-  height: 44px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

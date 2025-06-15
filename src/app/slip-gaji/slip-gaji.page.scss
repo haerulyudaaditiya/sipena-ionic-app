@@ -1,14 +1,15 @@
 ion-content {
   --background: #003b6f;
   padding: 16px;
-  padding-top: 16px; 
+  padding-top: env(safe-area-inset-top); 
   padding-bottom: 80px;
 }
   
 ion-header {
-    --background: #ffffff;
-    position: relative;
-    z-index: 2;
+  --background: #ffffff;
+  position: relative;
+  z-index: 2;
+  padding-top: env(safe-area-inset-top);
 }
 
 .centered-toolbar {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -8,18 +8,20 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['login.page.scss'],
   standalone: false,
 })
-export class LoginPage {
-  email: string = '';
-  password: string = '';
-  isAgreed: boolean = false;
+export class LoginPage implements OnInit {
+  email = '';
+  password = '';
+  isAgreed = false;
 
-  passwordType: string = 'password';
-  passwordIcon: string = 'eye-off';
+  passwordType = 'password';
+  passwordIcon = 'eye-off';
 
   constructor(
     private router: Router,
     private alertController: AlertController
   ) {}
+
+  ngOnInit() {}
 
   async doSubmit() {
     if (!this.isAgreed) {
@@ -32,15 +34,13 @@ export class LoginPage {
       return;
     }
 
-    // Ganti dengan data valid dari backend jika perlu
     const validEmail = 'rendysuwandi66@gmail.com';
     const validPassword = 'rndy#6604';
 
     if (this.email === validEmail && this.password === validPassword) {
-      // Simpan data jika dibutuhkan
-      localStorage.setItem('email', this.email);
-      localStorage.setItem('password', this.password);
-      this.router.navigateByUrl('/dashboard');
+      // Simpan status login ke localStorage
+      localStorage.setItem('isLoggedIn', 'true');
+      this.router.navigateByUrl('/dashboard', { replaceUrl: true });
     } else {
       const alert = await this.alertController.create({
         header: 'Login Gagal',
@@ -55,4 +55,9 @@ export class LoginPage {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye' ? 'eye-off' : 'eye';
   }
+
+  goToForgotPassword() {
+    this.router.navigate(['/forgot-password']);
+  }
 }
+

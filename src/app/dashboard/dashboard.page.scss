@@ -1,7 +1,7 @@
 ion-content {
   --background: #003b6f;
   padding: 16px;
-  padding-top: 100px;
+  padding-top: env(safe-area-inset-top);
 }
 
 ion-header {
@@ -134,7 +134,6 @@ ion-header {
   }
 }
 
-
 .footer-toolbar {
   bottom: 0;
   width: 100%;
@@ -159,11 +158,15 @@ ion-header {
     color: #083f73;
     transition: color 0.2s ease;
   }
-
-  &:hover,
-  &:active {
-    background: rgba(8, 63, 115, 0.1); // soft highlight saat ditekan
-  }
 }
 
+.footer-icon.active {
+  background: rgba(8, 63, 115, 0.15);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
 
+  ion-icon {
+    color: #003b6f;
+    font-weight: bold;
+  }
+}

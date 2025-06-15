@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { AlertController, NavController, PopoverController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences'; 
 
 @Component({
   selector: 'app-profile-popover',
@@ -12,6 +14,7 @@ export class ProfilePopoverComponent implements OnInit {
   constructor(
     private alertCtrl: AlertController,
     private navCtrl: NavController,
+    private location: Location,
     private popoverCtrl: PopoverController
   ) {}
 
@@ -38,17 +41,18 @@ export class ProfilePopoverComponent implements OnInit {
       header: 'Konfirmasi Keluar',
       message: 'Apakah Anda yakin ingin keluar dari akun?',
       buttons: [
-        {
-          text: 'Batal',
-          role: 'cancel'
-        },
+        { text: 'Batal', role: 'cancel' },
         {
           text: 'Keluar',
-          handler: () => {
-            localStorage.clear();
+          handler: async () => {
+            await Preferences.remove({ key: 'isLoggedIn' });
+            await Preferences.remove({ key: 'email' });
+            await Preferences.remove({ key: 'password' });
+
             this.popoverCtrl.dismiss();
+            this.location.replaceState('/');
             setTimeout(() => {
-              this.navCtrl.navigateRoot('/login');
+              this.navCtrl.navigateRoot('/login', { replaceUrl: true });
             }, 100);
           }
         }

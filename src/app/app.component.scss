@@ -1,0 +1,24 @@
+// ion-content {
+//   padding-top: env(safe-area-inset-top);
+//   padding-bottom: env(safe-area-inset-bottom);
+//   padding-left: env(safe-area-inset-left);
+//   padding-right: env(safe-area-inset-right);
+// }
+
+// ion-header ion-toolbar {
+//   padding-top: env(safe-area-inset-top);
+//   padding-left: env(safe-area-inset-left);
+//   padding-right: env(safe-area-inset-right);
+// }
+
+/* src/global.scss atau style.scss */
+// ion-app {
+//   padding-top: env(safe-area-inset-top); /* agar konten tidak tertutup status bar */
+// }
+
+ion-app, ion-content {
+  padding-top: constant(safe-area-inset-top); /* iOS lama */
+  padding-top: env(safe-area-inset-top);      /* iOS & Android modern */
+}
+
+

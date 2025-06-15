@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
@@ -14,8 +15,15 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class PresensiPage implements OnInit {
   presensiData: any = null;
+  activeRoute: string = '';
 
-  constructor(private router: Router, private alertController: AlertController, private location: Location) { }
+  constructor(private router: Router, private alertController: AlertController, private location: Location) {
+    this.router.events
+    .pipe(filter((event) => event instanceof NavigationEnd))
+    .subscribe((event: NavigationEnd) => {
+      this.activeRoute = (event as NavigationEnd).urlAfterRedirects;
+    });
+   }
 
   ngOnInit() {
     defineCustomElements(window);
@@ -65,13 +73,13 @@ export class PresensiPage implements OnInit {
     this.presensiData = null;
   }
 
-  goTo(route: string) {
+   goTo(route: string) {
     switch (route) {
-      case 'perusahaan':
-        this.router.navigate(['/company-profile']);
-        break;
       case 'beranda':
         this.router.navigate(['/dashboard']);
+        break;
+      case 'presensi':
+        this.router.navigate(['/presensi']);
         break;
       case 'akun':
         this.router.navigate(['/akun']);

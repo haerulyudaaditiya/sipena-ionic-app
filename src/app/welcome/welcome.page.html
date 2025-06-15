@@ -1,0 +1,32 @@
+<ion-content class="ion-padding">
+  <div class="welcome-wrapper">
+    <img src="assets/logo.png" alt="logo" class="logo" />
+
+    <h2>Selamat Datang di SIPENA</h2>
+    <p>Untuk menggunakan aplikasi ini, Anda harus menyetujui:</p>
+
+    <ion-card class="terms-card">
+      <ion-card-header>
+        <ion-card-title>Syarat & Ketentuan</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li>📷 Akses <strong>kamera</strong> untuk dokumentasi kehadiran</li>
+          <li>📁 Akses <strong>penyimpanan</strong> untuk unggah dan simpan file</li>
+          <li>📍 Akses <strong>lokasi</strong> untuk mencatat posisi kehadiran</li>
+        </ul>
+        <p class="disclaimer">
+          Dengan melanjutkan, Anda menyetujui semua syarat di atas dan <a href="#">kebijakan privasi</a> aplikasi.
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-checkbox [(ngModel)]="isChecked" labelPlacement="end">
+      Saya menyetujui syarat & ketentuan
+    </ion-checkbox>
+
+    <ion-button expand="block" shape="round" (click)="agreeAndContinue()" [disabled]="!isChecked">
+      Lanjutkan
+    </ion-button>
+  </div>
+</ion-content>

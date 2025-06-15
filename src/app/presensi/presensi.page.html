@@ -44,15 +44,27 @@
 <!-- Floating Footer -->
 <ion-toolbar class="footer-toolbar">
   <ion-buttons class="footer-menu" expand="block">
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('beranda')">
-      <ion-icon name="home-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('perusahaan')">
-      <ion-icon name="business-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('akun')">
-      <ion-icon name="person-outline" slot="icon-only"></ion-icon>
-    </ion-button>
+    <div
+      class="footer-icon"
+      [ngClass]="{ active: activeRoute.includes('/dashboard') }"
+      (click)="goTo('beranda')"
+    >
+      <ion-icon name="home-outline"></ion-icon>
+    </div>
+    <div
+      class="footer-icon"
+      [ngClass]="{ active: activeRoute.includes('/presensi') }"
+      (click)="goTo('presensi')"
+    >
+      <ion-icon name="finger-print-outline"></ion-icon>
+    </div>
+    <div
+      class="footer-icon"
+      [ngClass]="{ active: activeRoute.includes('/akun') }"
+      (click)="goTo('akun')"
+    >
+      <ion-icon name="person-outline"></ion-icon>
+    </div>
   </ion-buttons>
 </ion-toolbar>
 

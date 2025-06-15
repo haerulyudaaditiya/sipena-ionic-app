@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { AlertController, NavController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -12,12 +14,20 @@ import { AlertController, NavController } from '@ionic/angular';
 })
 export class AkunPage implements OnInit {
 
+  activeRoute: string = '';
+
   constructor(
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private router: Router,
     private location: Location
-  ) {}
+  ) {
+     this.router.events
+    .pipe(filter((event) => event instanceof NavigationEnd))
+    .subscribe((event: NavigationEnd) => {
+      this.activeRoute = (event as NavigationEnd).urlAfterRedirects;
+    });
+  }
 
   ngOnInit() {}
 
@@ -62,29 +72,30 @@ export class AkunPage implements OnInit {
       header: 'Konfirmasi Keluar',
       message: 'Apakah Anda yakin ingin keluar dari akun?',
       buttons: [
-        {
-          text: 'Batal',
-          role: 'cancel'
-        },
+        { text: 'Batal', role: 'cancel' },
         {
           text: 'Keluar',
-          handler: () => {
-            localStorage.clear(); // atau storage.clear()
-            this.navCtrl.navigateRoot('/login');
+          handler: async () => {
+            await Preferences.remove({ key: 'isLoggedIn' }); // Hapus status login
+            await Preferences.remove({ key: 'email' });
+            await Preferences.remove({ key: 'password' });
+
+            this.location.replaceState('/'); // Reset history
+            this.navCtrl.navigateRoot('/login', { replaceUrl: true }); // Kembali ke login
           }
         }
       ]
     });
-
     await alert.present();
   }
+
   goTo(route: string) {
     switch (route) {
-      case 'perusahaan':
-        this.router.navigate(['/company-profile']);
-        break;
       case 'beranda':
         this.router.navigate(['/dashboard']);
+        break;
+      case 'presensi':
+        this.router.navigate(['/presensi']);
         break;
       case 'akun':
         this.router.navigate(['/akun']);

@@ -13,15 +13,29 @@ export class HomePage implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-     setTimeout(() => {
+    setTimeout(() => {
       this.showSplash = false;
 
-      const isAgreed = localStorage.getItem('isAgreed');
-      if (isAgreed === 'true') {
-        this.router.navigateByUrl('/login');
-      } else {
-        this.router.navigateByUrl('/welcome');
+      const currentUrl = window.location.pathname;
+      const isFirstOpen = localStorage.getItem('firstOpen');
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+      // ❗ Jangan redirect kalau user sedang di halaman forgot/reset password
+      if (
+        currentUrl === '/forgot-password' ||
+        currentUrl === '/reset-password'
+      ) {
+        return;
       }
-    }, 5000); // 5 detik
+
+      if (!isFirstOpen) {
+        localStorage.setItem('firstOpen', 'true');
+        this.router.navigateByUrl('/welcome');
+      } else if (isLoggedIn === 'true') {
+        this.router.navigateByUrl('/dashboard');
+      } else {
+        this.router.navigateByUrl('/login');
+      }
+    }, 2000);
   }
 }

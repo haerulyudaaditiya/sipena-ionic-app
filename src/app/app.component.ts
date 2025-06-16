@@ -39,7 +39,9 @@ export class AppComponent {
       }
     }
 
-    // Ambil data dari localStorage
+    // ✅ Tambahkan delay kecil agar localStorage siap dibaca
+    await new Promise(resolve => setTimeout(resolve, 300));
+
     const isAgreed = localStorage.getItem('isAgreed');
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const currentUrl = window.location.pathname;
@@ -52,7 +54,6 @@ export class AppComponent {
     } else if (isLoggedIn === 'true') {
       await this.router.navigateByUrl('/dashboard', { replaceUrl: true });
     } else {
-      // Jangan redirect ke login jika user sedang di forgot-password atau reset-password
       if (
         currentUrl !== '/forgot-password' &&
         currentUrl !== '/reset-password'
@@ -60,13 +61,12 @@ export class AppComponent {
         await this.router.navigateByUrl('/login', { replaceUrl: true });
       }
     }
-
   }
 
   handleBackButton() {
     this.platform.backButton.subscribeWithPriority(10, async () => {
       const currentUrl = this.router.url;
-      const exitPages = ['/login', '/dashboard'];
+      const exitPages = ['/dashboard', '/login'];
 
       if (exitPages.includes(currentUrl)) {
         const currentTime = new Date().getTime();

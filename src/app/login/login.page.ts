@@ -10,8 +10,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
   email = '';
-  password = '';
-  isAgreed = false;
+  password = '';  
 
   passwordType = 'password';
   passwordIcon = 'eye-off';
@@ -24,15 +23,6 @@ export class LoginPage implements OnInit {
   ngOnInit() {}
 
   async doSubmit() {
-    if (!this.isAgreed) {
-      const alert = await this.alertController.create({
-        header: 'Peringatan',
-        message: 'Anda harus menyetujui syarat dan ketentuan!',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
 
     const validEmail = 'rendysuwandi66@gmail.com';
     const validPassword = 'rndy#6604';

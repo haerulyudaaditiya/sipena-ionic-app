@@ -35,3 +35,32 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* 1. Impor CSS asli dari Leaflet */
+@import "~leaflet/dist/leaflet.css";
+
+/* 2. Override path gambar ikon secara manual */
+/* Mengarahkan URL ke folder yang benar di dalam node_modules */
+.leaflet-marker-icon,
+.leaflet-marker-icon:hover {
+    background-image: url('~leaflet/dist/images/marker-icon.png');
+}
+
+.leaflet-marker-icon.leaflet-retina,
+.leaflet-marker-icon.leaflet-retina:hover {
+    background-image: url('~leaflet/dist/images/marker-icon-2x.png');
+    background-size: 25px 41px; /* Sesuaikan dengan ukuran gambar asli */
+}
+
+.leaflet-marker-shadow {
+    background-image: url('~leaflet/dist/images/marker-shadow.png');
+    background-size: 41px 41px; /* Sesuaikan dengan ukuran gambar asli */
+}
+
+ion-modal.custom-alert-modal {
+  --width: 90%;
+  --max-width: 380px;
+  --height: auto;
+  --border-radius: 20px;
+  --box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}

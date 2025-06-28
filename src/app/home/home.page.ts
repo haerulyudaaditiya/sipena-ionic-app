@@ -36,6 +36,6 @@ export class HomePage implements OnInit {
       } else {
         this.router.navigateByUrl('/login');
       }
-    }, 2000);
+    }, 5000);
   }
 }

@@ -1,171 +1,160 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { Platform, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular'; // DIUBAH: AlertController diganti ModalController
+import { firstValueFrom } from 'rxjs';
+import { CustomAlertComponent } from '../components/custom-alert/custom-alert.component'; // Import komponen alert kustom
+import { SalaryService } from '../services/salary.service';
 
-import { File } from '@awesome-cordova-plugins/file/ngx';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
-
-
-declare var html2pdf: any;
+export interface SalaryHistoryItem {
+  id: string;
+  salary_date: string;
+  net_salary: number;
+}
 
 @Component({
   selector: 'app-slip-gaji',
   templateUrl: './slip-gaji.page.html',
   styleUrls: ['./slip-gaji.page.scss'],
-  standalone: false,
-  providers: [File, FileOpener]
+  standalone: false
 })
 export class SlipGajiPage implements OnInit {
-  months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-  years = [2023, 2024, 2025];
-  selectedMonth: string | null = null;
+  isLoading = true;
+  masterSalaryHistory: SalaryHistoryItem[] = [];
+  filteredSalaryHistory: SalaryHistoryItem[] = [];
+
+  searchTerm = '';
+  selectedMonth: number | null = null;
   selectedYear: number | null = null;
-  slipVisible = false;
+  months: { label: string; value: number }[] = [];
+  years: number[] = [];
 
   constructor(
     private router: Router,
     private location: Location,
-    private platform: Platform,
-    private file: File,
-    private fileOpener: FileOpener,
-    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController, // DIUBAH: Menggunakan ModalController
+    private salaryService: SalaryService
   ) {}
 
-   ngOnInit() {
-
+  ngOnInit() {
+    this.generateFilterOptions();
+    this.loadSalaryHistory();
   }
 
-  async generateAndOpenPDF() {
+  async loadSalaryHistory() {
+    this.isLoading = true;
+    const loading = await this.loadingCtrl.create({
+      message: 'Memuat riwayat gaji...',
+    });
+    await loading.present();
+
     try {
-      this.slipVisible = true;
+      const response = await firstValueFrom(
+        this.salaryService.getSalaryHistory()
+      );
+      this.masterSalaryHistory = response.data.map((s: any) => ({
+        ...s,
+        net_salary: parseFloat(s.net_salary),
+      }));
 
-      const element = document.getElementById('slipGaji');
-      if (!element) {
-        this.showToast('Element PDF tidak ditemukan');
-        this.slipVisible = false;
-        return;
-      }
-
-      const opt = {
-        margin: 0.5,
-        filename: 'slip-gaji.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      };
-
-      const pdfBlob: Blob = await html2pdf().set(opt).from(element).outputPdf('blob');
-
-      const fileName = 'slip-gaji.pdf';
-      const downloadPath = this.file.externalRootDirectory + 'Download/';
-
-      await this.file.writeFile(downloadPath, fileName, pdfBlob, { replace: true });
-
-      await this.fileOpener.open(downloadPath + fileName, 'application/pdf');
-      this.showToast('PDF berhasil disimpan ke folder Download');
-    } catch (err) {
-      console.error('PDF Error:', err);
-      this.showToast('Gagal membuat atau membuka file PDF.');
+      this.filteredSalaryHistory = this.masterSalaryHistory;
+    } catch (error) {
+      // DIUBAH: Memanggil custom alert
+      this.showCustomAlert(
+        'danger',
+        'Gagal Memuat',
+        'Terjadi kesalahan saat mengambil data.'
+      );
     } finally {
-      this.slipVisible = false;
+      this.isLoading = false;
+      await loading.dismiss();
     }
   }
 
-  async generatePdfBlob(): Promise<Blob | null> {
-    this.slipVisible = true;
-
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const element = document.getElementById('slipGaji');
-        if (!element) {
-          reject('Element not found');
-          return;
-        }
-
-        const opt = {
-          margin: 0.5,
-          filename: 'slip-gaji.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(element).outputPdf('blob').then((pdfBlob: Blob) => {
-          this.slipVisible = false;
-          resolve(pdfBlob);
-        }).catch((err: any) => {
-            this.slipVisible = false;
-            reject(err);
-          });
-      }, 300); // Tunggu 300ms supaya DOM siap
-    });
+  // Logika filter dan search Anda tidak diubah
+  runFiltersAndSearch() {
+    let result = this.masterSalaryHistory;
+    if (this.selectedYear) {
+      result = result.filter(
+        (item) => new Date(item.salary_date).getFullYear() === this.selectedYear
+      );
+    }
+    if (this.selectedMonth) {
+      result = result.filter(
+        (item) =>
+          new Date(item.salary_date).getMonth() + 1 === this.selectedMonth
+      );
+    }
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower) {
+      result = result.filter((item) => {
+        const periode = new Date(item.salary_date)
+          .toLocaleString('id-ID', { month: 'long', year: 'numeric' })
+          .toLowerCase();
+        return periode.includes(searchTermLower);
+      });
+    }
+    this.filteredSalaryHistory = result;
   }
 
-  async downloadPDF() {
-    this.slipVisible = true;
-    await new Promise((resolve) => setTimeout(resolve, 500)); // beri waktu render
-
-    const blob = await this.generatePdfBlob();
-    const fileName = 'slip-gaji.pdf';
-    this.slipVisible = false;
-
-    if (!blob) {
-      this.showToast('Gagal membuat file PDF.');
-      return;
-    }
-
-    if (this.platform.is('cordova') || this.platform.is('capacitor')) {
-      try {
-        const path = this.file.externalDataDirectory || this.file.dataDirectory;
-        const savedFile = await this.file.writeFile(path, fileName, blob, { replace: true });
-
-        if (savedFile && (savedFile as any).nativeURL) {
-          this.fileOpener.open((savedFile as any).nativeURL, 'application/pdf');
-        } else {
-          this.showToast('File berhasil disimpan tapi tidak dapat dibuka otomatis.');
-        }
-      } catch (error) {
-        console.error('Gagal menyimpan/buka file:', error);
-        this.showToast('Terjadi kesalahan saat menyimpan file.');
-      }
-    } else {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    }
+  resetFilters() {
+    this.selectedMonth = null;
+    this.selectedYear = null;
+    this.searchTerm = '';
+    this.filteredSalaryHistory = this.masterSalaryHistory;
   }
 
-  async showToast(msg: string) {
-    const toast = await this.toastCtrl.create({
-      message: msg,
-      duration: 3000,
-      color: 'danger',
-      position: 'bottom'
-    });
-    toast.present();
+  goToDetail(salaryId: string) {
+    this.router.navigate(['/detail-slip-gaji', salaryId]);
   }
 
-  goTo(route: string) {
-    switch (route) {
-      case 'beranda':
-        this.router.navigate(['/dashboard']);
-        break;
-      case 'presensi':
-        this.router.navigate(['/presensi']);
-        break;
-      case 'akun':
-        this.router.navigate(['/akun']);
-        break;
-      default:
-        console.warn('Rute tidak dikenali:', route);
-    }
+  private generateFilterOptions() {
+    this.months = Array.from({ length: 12 }, (_, i) => ({
+      label: new Date(0, i).toLocaleString('id-ID', { month: 'long' }),
+      value: i + 1,
+    }));
+    const currentYear = new Date().getFullYear();
+    this.years = Array.from({ length: 5 }, (_, i) => currentYear - i);
   }
 
   goBack() {
     this.location.back();
+  }
+
+  // DIHAPUS: Fungsi presentAlert yang lama
+
+  // DITAMBAHKAN: Fungsi helper baru untuk menampilkan alert kustom
+  async showCustomAlert(
+    type: 'success' | 'danger' | 'warning' | 'primary',
+    header: string,
+    message: string,
+    okHandler?: () => void
+  ) {
+    const iconMap = {
+      success: 'checkmark-circle-outline',
+      danger: 'alert-circle-outline',
+      warning: 'warning-outline',
+      primary: 'information-circle-outline',
+    };
+
+    const modal = await this.modalCtrl.create({
+      component: CustomAlertComponent,
+      componentProps: {
+        icon: iconMap[type],
+        alertType: type,
+        headerText: header,
+        messageText: message,
+        confirmButton: { text: 'OK' },
+      },
+      cssClass: 'custom-alert-modal',
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.role === 'confirm' && okHandler) {
+      okHandler();
+    }
   }
 }

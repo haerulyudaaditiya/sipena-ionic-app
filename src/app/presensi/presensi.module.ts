@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { PresensiPageRoutingModule } from './presensi-routing.module';
 
 import { PresensiPage } from './presensi.page';
+import { CustomAlertComponentModule } from '../components/custom-alert/custom-alert.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PresensiPageRoutingModule
+    PresensiPageRoutingModule,
+    CustomAlertComponentModule
   ],
   declarations: [PresensiPage]
 })

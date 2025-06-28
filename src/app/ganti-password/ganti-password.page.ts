@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoadingController, ModalController } from '@ionic/angular'; // DIUBAH: AlertController diganti ModalController
+import { firstValueFrom } from 'rxjs';
+import { CustomAlertComponent } from '../components/custom-alert/custom-alert.component'; // Import komponen alert kustom
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-ganti-password',
@@ -12,23 +15,24 @@ import { Location } from '@angular/common';
 })
 export class GantiPasswordPage implements OnInit {
   passwordForm: FormGroup;
-
-  // Tambahkan variabel ini
   showCurrentPassword = false;
   showNewPassword = false;
   showConfirmPassword = false;
+  isLoading = false;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private alertCtrl: AlertController,
-    private location: Location
+    private modalCtrl: ModalController, // DIUBAH: Menggunakan ModalController
+    private loadingCtrl: LoadingController,
+    private location: Location,
+    private authService: AuthService
   ) {
     this.passwordForm = this.fb.group(
       {
-        currentPassword: ['', Validators.required],
-        newPassword: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', Validators.required]
+        currentPassword: ['', [Validators.required]],
+        newPassword: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }
     );
@@ -42,40 +46,101 @@ export class GantiPasswordPage implements OnInit {
     return newPassword === confirmPassword ? null : { mismatch: true };
   }
 
+  /**
+   * DIUBAH: Menggunakan async/await dan modal kustom
+   */
   async submit() {
+    this.passwordForm.markAllAsTouched();
     if (this.passwordForm.invalid) {
-      await this.alertCtrl.create({
-        header: 'Gagal',
-        message: 'Silakan lengkapi semua kolom dan pastikan konfirmasi password benar.',
-        buttons: ['OK']
-      }).then(alert => alert.present());
-      this.passwordForm.markAllAsTouched();
+      this.showCustomAlert(
+        'warning',
+        'Gagal',
+        'Silakan lengkapi semua kolom dan pastikan konfirmasi password benar.'
+      );
       return;
     }
 
-    const { currentPassword, newPassword } = this.passwordForm.value;
+    this.isLoading = true;
+    const loading = await this.presentLoading('Memperbarui password...');
 
-    // TODO: Simpan ke API kalau perlu
-    console.log('Password diganti:', { currentPassword, newPassword });
+    try {
+      const { currentPassword, newPassword, confirmPassword } =
+        this.passwordForm.value;
+      await firstValueFrom(
+        this.authService.changePassword(
+          currentPassword,
+          newPassword,
+          confirmPassword
+        )
+      );
 
-    await this.alertCtrl.create({
-      header: 'Berhasil',
-      message: 'Password berhasil diperbarui.',
-      buttons: [{
-        text: 'OK',
-        handler: () => {
+      await loading.dismiss();
+      await this.showCustomAlert(
+        'success',
+        'Berhasil',
+        'Password Anda telah berhasil diperbarui.',
+        () => {
           this.passwordForm.reset();
           this.router.navigate(['/dashboard']);
         }
-      }]
-    }).then(alert => alert.present());
-  }
-
-  goTo(route: string) {
-    if (route === 'beranda') {
-      this.router.navigate(['/dashboard']);
+      );
+    } catch (error: any) {
+      await loading.dismiss();
+      const errorMessage =
+        error?.error?.message ||
+        'Terjadi kesalahan. Pastikan password saat ini benar.';
+      this.showCustomAlert('danger', 'Gagal', errorMessage);
+    } finally {
+      this.isLoading = false;
     }
   }
+
+  // --- Helper & Navigasi ---
+  async presentLoading(message: string) {
+    const loading = await this.loadingCtrl.create({
+      message,
+      spinner: 'crescent',
+    });
+    await loading.present();
+    return loading;
+  }
+
+  /**
+   * DITAMBAHKAN: Fungsi helper baru untuk menampilkan alert kustom
+   */
+  async showCustomAlert(
+    type: 'success' | 'danger' | 'warning' | 'primary',
+    header: string,
+    message: string,
+    okHandler?: () => void
+  ) {
+    const iconMap = {
+      success: 'checkmark-circle-outline',
+      danger: 'alert-circle-outline',
+      warning: 'warning-outline',
+      primary: 'information-circle-outline',
+    };
+
+    const modal = await this.modalCtrl.create({
+      component: CustomAlertComponent,
+      componentProps: {
+        icon: iconMap[type],
+        alertType: type,
+        headerText: header,
+        messageText: message,
+        confirmButton: { text: 'OK' },
+      },
+      cssClass: 'custom-alert-modal',
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.role === 'confirm' && okHandler) {
+      okHandler();
+    }
+  }
+
   goBack() {
     this.location.back();
   }

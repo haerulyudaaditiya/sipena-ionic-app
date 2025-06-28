@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { RiwayatPageRoutingModule } from './riwayat-routing.module';
 
 import { RiwayatPage } from './riwayat.page';
+import { CustomAlertComponentModule } from '../components/custom-alert/custom-alert.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RiwayatPageRoutingModule
+    RiwayatPageRoutingModule,
+    CustomAlertComponentModule
   ],
   declarations: [RiwayatPage]
 })

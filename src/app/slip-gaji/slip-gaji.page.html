@@ -2,82 +2,95 @@
   <ion-toolbar class="centered-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="goBack()">
-        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <div slot="primary" class="centered-title">Slip Gaji & Tunjangan</div>
+    <div slot="primary" class="centered-title">Riwayat Slip Gaji</div>
+  </ion-toolbar>
+
+  <!-- Toolbar untuk search dan filter -->
+  <ion-toolbar class="search-toolbar">
+    <div class="search-filter-container">
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="runFiltersAndSearch()"
+        placeholder="Cari berdasarkan periode..."
+        animated
+        show-clear-button="always"
+        class="custom-searchbar"
+        [disabled]="isLoading"
+      ></ion-searchbar>
+      <ion-button id="filter-trigger" fill="clear" class="filter-button" [disabled]="isLoading">
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="form-container">
-    <ion-item>
-      <ion-label>Pilih Bulan</ion-label>
-      <ion-select [(ngModel)]="selectedMonth" interface="popover">
-        <ion-select-option *ngFor="let bulan of months" [value]="bulan">{{ bulan }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Pilih Tahun</ion-label>
-      <ion-select [(ngModel)]="selectedYear" interface="popover">
-        <ion-select-option *ngFor="let tahun of years" [value]="tahun">{{ tahun }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-button expand="block" (click)="downloadPDF()" [disabled]="!selectedMonth || !selectedYear">
-      Download PDF
-    </ion-button>
+  <!-- Indikator Loading -->
+  <div *ngIf="isLoading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Memuat riwayat gaji...</p>
   </div>
 
-  <!-- Elemen slip gaji yang muncul hanya saat proses PDF -->
-  <div *ngIf="slipVisible" id="slipGaji" class="slip-container">
-    <img src="assets/logo.png" alt="Logo Perusahaan" class="logo" />
-    <h2 class="title">PT. JAYA BERKAH UTAMA</h2>
-    <p class="alamat">Jl. Jendral Sudirman RT. 014 RW. 004 Ardiarsa Kec. Karawang Barat<br>Kabupaten Karawang – Jawa Barat 43289</p>
-    <h3 class="slip-title">SLIP GAJI</h3>
-    <table class="gaji-table">
-      <tr><td>GAJI BULAN</td><td>: {{ selectedMonth }} {{ selectedYear }}</td></tr>
-      <tr><td>NAMA</td><td>: Rendy Suwandi Saputra</td></tr>
-      <tr><td>HARI KERJA</td><td>: 8 Hari</td></tr>
-      <tr><td>ALPA KERJA</td><td>: 0 Hari</td></tr>
-      <tr><td>JAM TELAT</td><td>: 0</td></tr>
-    </table>
-    <div class="section">
-      <div class="left">
-        <strong>PENGHASILAN:</strong>
-        <p>GAJI POKOK: Rp4.250.000</p>
-        <p>LEMBURAN: Rp310.000</p>
-        <p>TUNJANGAN: Rp -</p>
-      </div>
-      <div class="right">
-        <strong>POTONGAN:</strong>
-        <p>KASBON: Rp -</p>
-        <p>ALPA: Rp -</p>
-        <p>ABSEN: Rp -</p>
-        <p>PPh 21: Rp -</p>
-      </div>
-    </div>
-    <h4 class="gaji-bersih">GAJI BERSIH: <span>Rp4.560.000</span></h4>
-    <div class="signature">
-      <div><p>Yang Menyerahkan,</p><br /><strong>Toriq Ardiansya</strong></div>
-      <div><p>Yang Menerima,</p><br /><strong>Rendy Suwandi S</strong></div>
-    </div>
+  <!-- Daftar Riwayat Gaji -->
+  <div *ngIf="!isLoading && filteredSalaryHistory.length > 0">
+    <ion-list class="history-list">
+      <ion-card
+        *ngFor="let salary of filteredSalaryHistory"
+        class="history-card"
+        button
+        (click)="goToDetail(salary.id)">
+        <ion-item lines="none">
+          <div class="icon-background" slot="start">
+            <ion-icon name="wallet-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Gaji Periode {{ salary.salary_date | date:'MMMM yyyy' }}</h3>
+            <p>Total Diterima: <strong>Rp {{ salary.net_salary | number:'1.0-0' }}</strong></p>
+          </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end" color="medium"></ion-icon>
+        </ion-item>
+      </ion-card>
+    </ion-list>
   </div>
+
+  <!-- Tampilan Saat Tidak Ada Data -->
+  <div *ngIf="!isLoading && filteredSalaryHistory.length === 0" class="empty-state">
+    <ion-icon name="receipt-outline"></ion-icon>
+    <h2>Riwayat Gaji Kosong</h2>
+    <p>Tidak ada data yang cocok dengan filter atau pencarian Anda.</p>
+  </div>
+
+  <!-- Popover untuk Filter Tanggal -->
+  <ion-popover trigger="filter-trigger" triggerAction="click" side="bottom" alignment="end">
+    <ng-template>
+      <ion-list>
+        <ion-list-header>Filter Berdasarkan Tanggal</ion-list-header>
+        <ion-item>
+          <ion-label>Bulan</ion-label>
+          <!-- DIUBAH: (ionChange) memanggil fungsi baru -->
+          <ion-select [(ngModel)]="selectedMonth" (ionChange)="runFiltersAndSearch()">
+            <!-- DITAMBAHKAN: Opsi untuk menampilkan semua bulan -->
+            <ion-select-option [value]="null">Semua Bulan</ion-select-option>
+            <ion-select-option *ngFor="let month of months" [value]="month.value">{{ month.label }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tahun</ion-label>
+          <!-- DIUBAH: (ionChange) memanggil fungsi baru -->
+          <ion-select [(ngModel)]="selectedYear" (ionChange)="runFiltersAndSearch()">
+            <!-- DITAMBAHKAN: Opsi untuk menampilkan semua tahun -->
+            <ion-select-option [value]="null">Semua Tahun</ion-select-option>
+            <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item button (click)="resetFilters()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          <ion-label color="primary">Reset Filter</ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+  </ion-popover>
 </ion-content>
-
-<!-- Floating Footer -->
-<ion-toolbar class="footer-toolbar">
-  <ion-buttons class="footer-menu" expand="block">
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('beranda')">
-      <ion-icon name="home-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('presensi')">
-      <ion-icon name="finger-print-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('akun')">
-      <ion-icon name="person-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
-

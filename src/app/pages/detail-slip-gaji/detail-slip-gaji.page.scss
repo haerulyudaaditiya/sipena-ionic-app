@@ -1,0 +1,118 @@
+/* --- KONTEN UTAMA --- */
+ion-content {
+  --background: #003b6f;
+}
+
+.page-container {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* --- HEADER --- */
+.centered-toolbar {
+  --background: #ffffff;
+}
+.centered-title {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+/* --- KARTU DETAIL --- */
+.details-card {
+  --background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+.details-card ion-card-header {
+  border-bottom: 1px solid #f0f2f5;
+  padding-left: 34px;
+}
+.details-card ion-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #083f73;
+}
+.details-card ion-card-subtitle {
+  font-size: 14px;
+  color: #5a6e80;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  padding: 16px 16px 8px 16px;
+}
+.detail-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 44px;
+}
+.detail-item ion-label {
+  font-size: 15px;
+  color: #333;
+}
+.detail-item ion-note {
+  font-size: 15px;
+  font-weight: 500;
+}
+.total-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  margin-top: 8px;
+  --border-color: #f0f2f5;
+}
+.total-item ion-label, .total-item ion-note {
+  font-size: 16px;
+}
+.net-salary-item {
+  --background: #f0f7ff;
+  --min-height: 60px;
+  margin-top: 16px;
+}
+.net-salary-item h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0056b3;
+}
+
+/* --- TOMBOL DOWNLOAD --- */
+.download-button {
+  --background: #ffffff;
+  --background-activated: #f0f0f0;
+  --color: #083f73;
+  --border-radius: 12px;
+  --box-shadow: none;
+  font-weight: bold;
+  height: 50px;
+  text-transform: none;
+  font-size: 16px;
+  margin-top: 24px;
+}
+
+/* --- TAMPILAN LOADING & KOSONG --- */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  text-align: center;
+  color: #ffffff;
+  opacity: 0.8;
+}
+.loading-state p {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 16px;
+}

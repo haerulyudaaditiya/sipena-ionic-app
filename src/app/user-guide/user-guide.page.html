@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Panduan Penggunaan</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-container">
+    
+    <!-- Header Halaman -->
+    <div class="page-intro">
+      <h1>Pusat Bantuan</h1>
+      <p>Temukan jawaban untuk pertanyaan umum mengenai penggunaan aplikasi SIPENA.</p>
+    </div>
+
+    <!-- Accordion untuk Daftar Panduan -->
+    <ion-accordion-group class="guide-accordion">
+      
+      <!-- Loop melalui setiap item panduan dari file .ts -->
+      <ion-accordion *ngFor="let item of guideItems" value="{{ item.id }}">
+        <ion-item slot="header" class="accordion-header">
+          <div class="icon-background" slot="start">
+            <ion-icon [name]="item.icon" color="primary"></ion-icon>
+          </div>
+          <ion-label>{{ item.question }}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <div class="answer-content" [innerHTML]="item.answer"></div>
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
+
+  </div>
+</ion-content>

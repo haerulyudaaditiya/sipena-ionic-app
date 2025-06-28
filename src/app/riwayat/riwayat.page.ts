@@ -1,145 +1,238 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { LoadingController, ModalController } from '@ionic/angular'; // DIUBAH: AlertController diganti ModalController
+import { firstValueFrom } from 'rxjs';
+import { LeaveRequestService } from '../services/leave-request.service';
+import { PresensiService } from '../services/presensi.service';
+import { CustomAlertComponent } from '../components/custom-alert/custom-alert.component'; // Import komponen alert kustom
+
+export interface RiwayatItem {
+  id: string;
+  type: 'Absensi' | 'Cuti';
+  title: string;
+  date: Date;
+  description: string;
+  status: string;
+  statusColor: 'success' | 'warning' | 'danger' | 'primary';
+  icon: string;
+}
 
 @Component({
   selector: 'app-riwayat',
   templateUrl: './riwayat.page.html',
   styleUrls: ['./riwayat.page.scss'],
-  standalone: false,
+  standalone: false
 })
 export class RiwayatPage implements OnInit {
-  selectedMonth: string = new Date().getMonth().toString(); // default bulan sekarang
-  selectedYear: number = new Date().getFullYear();
-  months = [
-    { value: '-1', label: 'All Time' },
-    { value: '0', label: 'Januari' },
-    { value: '1', label: 'Februari' },
-    { value: '2', label: 'Maret' },
-    { value: '3', label: 'April' },
-    { value: '4', label: 'Mei' },
-    { value: '5', label: 'Juni' },
-    { value: '6', label: 'Juli' },
-    { value: '7', label: 'Agustus' },
-    { value: '8', label: 'September' },
-    { value: '9', label: 'Oktober' },
-    { value: '10', label: 'November' },
-    { value: '11', label: 'Desember' },
-  ];
+  isLoading = true;
+  masterRiwayat: RiwayatItem[] = [];
+  filteredRiwayat: RiwayatItem[] = [];
+  searchTerm: string = '';
+  selectedMonth: number | null = null;
+  selectedYear: number | null = null;
+  months: { label: string; value: number }[] = [];
   years: number[] = [];
 
-  allData: any[] = []; // Data mentah semua
-  riwayatGabungan: any[] = [];
-
-  searchTerm: string = '';
-  filteredRiwayat: any[] = [];
-
-  constructor(private router: Router, private location: Location) {}
+  constructor(
+    private router: Router,
+    private location: Location,
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController, // DIUBAH: Menggunakan ModalController
+    private presensiService: PresensiService,
+    private leaveRequestService: LeaveRequestService
+  ) {}
 
   ngOnInit() {
-    const currentYear = new Date().getFullYear();
-    // 5 tahun kedepan
-    for (let y = currentYear; y <= currentYear + 4; y++) {
-      this.years.push(y);
-    }
-    // 5 tahun terakhir
-    // for (let y = currentYear - 2; y <= currentYear + 2; y++) {
-    //   this.years.push(y);
-    // }
-    // kombnasi 2 tahun terakhir dan kedepan
-    // for (let y = currentYear - 2; y <= currentYear + 2; y++) {
-    //   this.years.push(y);
-    // }
-
-    // Dummy data gabungan
-    this.allData = [
-      { jenis: 'absensi', tanggal: '2025-06-04', status: 'Masuk' },
-      { jenis: 'pengajuan', tanggal: '2025-06-12', startDate: '2025-06-12', endDate: '2025-06-14', status: 'Disetujui', keterangan: 'Cuti Tahunan' },
-      { jenis: 'absensi', tanggal: '2025-04-15', status: 'Cuti' },
-      { jenis: 'pengajuan', tanggal: '2025-04-01', startDate: '2025-04-01', endDate: '2025-04-02', status: 'Ditolak', keterangan: 'Cuti Sakit' },
-      { jenis: 'absensi', tanggal: '2025-05-29', status: 'Masuk' },
-      { jenis: 'pengajuan', tanggal: '2025-05-30', startDate: '2025-05-30', endDate: '2025-06-03', status: 'Disetujui', keterangan: 'Cuti Izin' },
-    ];
-
-    this.filterRiwayat();
+    this.generateFilterOptions();
+    this.loadAllHistory();
   }
 
-  filterRiwayat() {
-    let filtered = this.allData;
-
-    if (this.selectedMonth !== '-1') {
-      filtered = filtered.filter(item => {
-        const date = new Date(item.tanggal);
-        return date.getMonth().toString() === this.selectedMonth;
-      });
-    }
-
-    if (this.selectedYear !== -1) {
-      filtered = filtered.filter(item => {
-        const date = new Date(item.tanggal);
-        return date.getFullYear() === this.selectedYear;
-      });
-    }
-
-    this.riwayatGabungan = filtered.sort((a, b) => {
-      const dateA = new Date(this.getSortDate(a));
-      const dateB = new Date(this.getSortDate(b));
-      return dateB.getTime() - dateA.getTime();
+  async loadAllHistory() {
+    this.isLoading = true;
+    const loading = await this.loadingCtrl.create({
+      message: 'Memuat data...',
     });
+    await loading.present();
 
-    this.applySearch();
-  }
+    try {
+      const [attendanceData, leaveData] = await Promise.all([
+        firstValueFrom(this.presensiService.getHistory()),
+        firstValueFrom(this.leaveRequestService.getHistory()),
+      ]);
 
-  getSortDate(item: any): string {
-    if (item.jenis === 'pengajuan') {
-      return item.startDate || item.tanggal;
+      const mappedAttendances = this.mapAttendanceToRiwayat(
+        attendanceData.data
+      );
+      const mappedLeaves = this.mapLeaveToRiwayat(leaveData.data);
+
+      const combinedData = [...mappedAttendances, ...mappedLeaves];
+
+      combinedData.sort((a, b) => {
+        const aIsPending = a.status.toLowerCase() === 'pending';
+        const bIsPending = b.status.toLowerCase() === 'pending';
+
+        if (aIsPending && !bIsPending) return -1;
+        if (!aIsPending && bIsPending) return 1;
+
+        return b.date.getTime() - a.date.getTime();
+      });
+
+      this.masterRiwayat = combinedData;
+      this.filteredRiwayat = this.masterRiwayat; // Menampilkan semua data secara default
+    } catch (error) {
+      console.error('Gagal memuat riwayat:', error);
+      // DIUBAH: Memanggil custom alert untuk error
+      this.showCustomAlert(
+        'danger',
+        'Gagal Memuat',
+        'Tidak dapat mengambil data riwayat dari server.'
+      );
+    } finally {
+      this.isLoading = false;
+      await loading.dismiss();
     }
-    return item.tanggal;
   }
 
+  // --- Fungsi Mapping Data (Tidak ada perubahan) ---
+  private mapAttendanceToRiwayat(attendances: any[]): RiwayatItem[] {
+    return attendances.map((att) => ({
+      id: att.id,
+      type: 'Absensi',
+      title: `Absensi ${att.check_out ? 'Keluar' : 'Masuk'}`,
+      date: new Date(att.check_in),
+      description: `Lokasi: ${att.check_in_location}`,
+      status: att.status || 'Tepat Waktu',
+      statusColor: att.status === 'Terlambat' ? 'warning' : 'success',
+      icon: 'finger-print-outline',
+    }));
+  }
+  private mapLeaveToRiwayat(leaves: any[]): RiwayatItem[] {
+    const getIndonesianType = (type: string): string => {
+      const typeMap: { [key: string]: string } = {
+        annual: 'Cuti Tahunan',
+        sick: 'Izin Sakit',
+        personal: 'Keperluan Pribadi',
+        other: 'Lainnya',
+      };
+      return typeMap[type] || 'Cuti';
+    };
+    return leaves.map((leave) => ({
+      id: leave.id,
+      type: 'Cuti',
+      title: `Pengajuan: ${getIndonesianType(leave.type)}`,
+      date: new Date(leave.start_date),
+      description: leave.reason,
+      status: leave.status.charAt(0).toUpperCase() + leave.status.slice(1),
+      statusColor:
+        leave.status === 'approved'
+          ? 'success'
+          : leave.status === 'rejected'
+          ? 'danger'
+          : 'warning',
+      icon: 'calendar-outline',
+    }));
+  }
+
+  // --- DIUBAH: Fungsi lama ditambahkan kembali sebagai pembungkus ---
+  applyFilters() {
+    this.runFiltersAndSearch();
+  }
 
   applySearch() {
-    const term = this.searchTerm.toLowerCase();
-
-    this.filteredRiwayat = this.riwayatGabungan.filter(item => {
-      const tanggal = new Date(item.tanggal).toLocaleDateString('id-ID', {
-        day: '2-digit', month: 'long', year: 'numeric',
-      });
-
-      const combinedText = [
-        item.status,
-        item.keterangan,
-        tanggal,
-        item.jenis,
-        item.startDate,
-        item.endDate
-      ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-
-      return combinedText.includes(term);
-    });
+    this.runFiltersAndSearch();
   }
 
+  // --- Logika Filter dan Search Terpadu ---
+  private runFiltersAndSearch() {
+    let result = this.masterRiwayat;
 
-  goTo(route: string) {
-    switch (route) {
-      case 'perusahaan':
-        this.router.navigate(['/company-profile']);
-        break;
-      case 'beranda':
-        this.router.navigate(['/dashboard']);
-        break;
-      case 'akun':
-        this.router.navigate(['/akun']);
-        break;
-      default:
-        console.warn('Rute tidak dikenali:', route);
+    // 1. Filter berdasarkan Tahun (jika dipilih)
+    if (this.selectedYear) {
+      result = result.filter(
+        (item) => item.date.getFullYear() === this.selectedYear
+      );
+    }
+    // 2. Filter berdasarkan Bulan (jika dipilih)
+    if (this.selectedMonth) {
+      result = result.filter(
+        (item) => item.date.getMonth() + 1 === this.selectedMonth
+      );
+    }
+
+    // 3. Filter berdasarkan Pencarian (jika ada)
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower) {
+      result = result.filter(
+        (item) =>
+          item.type.toLowerCase().includes(searchTermLower) ||
+          item.title.toLowerCase().includes(searchTermLower) ||
+          item.status.toLowerCase().includes(searchTermLower)
+      );
+    }
+
+    this.filteredRiwayat = result;
+  }
+
+  resetFilters() {
+    this.selectedMonth = null;
+    this.selectedYear = null;
+    this.searchTerm = '';
+    this.filteredRiwayat = this.masterRiwayat;
+  }
+
+  // --- Helper & Navigasi ---
+  private generateFilterOptions() {
+    this.months = Array.from({ length: 12 }, (_, i) => ({
+      label: new Date(0, i).toLocaleString('id-ID', { month: 'long' }),
+      value: i + 1,
+    }));
+    const currentYear = new Date().getFullYear();
+    this.years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+  }
+
+  goToDetail(item: RiwayatItem) {
+    if (item.type === 'Absensi') {
+      this.router.navigate(['/detail-absensi', item.id]);
+    } else if (item.type === 'Cuti') {
+      this.router.navigate(['/detail-cuti', item.id]);
     }
   }
 
   goBack() {
     this.location.back();
+  }
+
+  async showCustomAlert(
+    type: 'success' | 'danger' | 'warning' | 'primary',
+    header: string,
+    message: string,
+    okHandler?: () => void
+  ) {
+    const iconMap = {
+      success: 'checkmark-circle-outline',
+      danger: 'alert-circle-outline',
+      warning: 'warning-outline',
+      primary: 'information-circle-outline',
+    };
+
+    const modal = await this.modalCtrl.create({
+      component: CustomAlertComponent,
+      componentProps: {
+        icon: iconMap[type],
+        alertType: type,
+        headerText: header,
+        messageText: message,
+        confirmButton: { text: 'OK' },
+      },
+      cssClass: 'custom-alert-modal',
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.role === 'confirm' && okHandler) {
+      okHandler();
+    }
   }
 }

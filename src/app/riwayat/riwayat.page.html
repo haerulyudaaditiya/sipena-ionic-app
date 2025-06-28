@@ -2,90 +2,136 @@
   <ion-toolbar class="centered-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="goBack()">
-        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <div slot="primary" class="centered-title">Riwayat</div>
-    <ion-buttons slot="end">
-      <ion-button id="filter-trigger" fill="clear">
-        <ion-icon name="calendar-outline" slot="icon-only"></ion-icon>
+
+    <div slot="primary" class="centered-title">Riwayat Aktivitas</div>
+
+    <!-- DIHAPUS: Tombol filter dipindahkan ke bawah -->
+  </ion-toolbar>
+
+  <!-- DIUBAH: Toolbar ini sekarang berisi Search Bar dan Tombol Filter -->
+
+  <ion-toolbar class="search-toolbar">
+    <div class="search-filter-container">
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="applySearch()"
+        placeholder="Cari berdasarkan jenis atau status..."
+        animated
+        show-clear-button="always"
+        class="custom-searchbar"
+        [disabled]="isLoading"
+      ></ion-searchbar>
+
+      <!-- DITAMBAHKAN: Tombol filter di sini -->
+
+      <ion-button
+        id="filter-trigger"
+        fill="clear"
+        class="filter-button"
+        [disabled]="isLoading"
+      >
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="search-wrapper">
-    <ion-searchbar
-      [(ngModel)]="searchTerm"
-      (ionInput)="applySearch()"
-      placeholder="Cari status, keterangan, atau tanggal..."
-      animated
-      show-clear-button="focus"
-    ></ion-searchbar>
+  <!-- Indikator Loading -->
+
+  <div *ngIf="isLoading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+
+    <p>Memuat riwayat...</p>
   </div>
 
-  <div class="history-section">
-    <ion-card *ngFor="let item of filteredRiwayat">
-      <ion-card-content>
-        <div class="history-label">
-          <ion-chip color="primary" outline>
-            <ion-label>{{ item.jenis === 'absensi' ? 'Absensi' : 'Pengajuan' }}</ion-label>
-          </ion-chip>
-          <span>{{ (item.jenis === 'pengajuan' ? item.startDate : item.tanggal) | date:'dd MMM yyyy' }}</span>
-        </div>
-        <div class="history-content">
-          <p *ngIf="item.jenis === 'absensi'">
-            <strong>Status:</strong> {{ item.status }}
-          </p>
-          <p *ngIf="item.jenis === 'pengajuan'">
-            {{ item.keterangan }}<br />
-            <strong>Tanggal:</strong> {{ item.startDate | date:'dd/MM/yyyy' }} - {{ item.endDate | date:'dd/MM/yyyy' }}<br />
-            <strong>Status:</strong> {{ item.status }}
-          </p>
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <p *ngIf="filteredRiwayat.length === 0" style="text-align: center; color: white;">
-      Tidak ada data ditemukan.
-    </p>
+  <!-- Daftar Riwayat -->
+
+  <div *ngIf="!isLoading && filteredRiwayat.length > 0">
+    <ion-list class="history-list">
+      <ion-card
+        *ngFor="let item of filteredRiwayat"
+        class="history-card"
+        [ngClass]="'status-' + item.status.toLowerCase()"
+        button
+        (click)="goToDetail(item)"
+      >
+        <ion-item lines="none">
+          <div class="icon-background" slot="start">
+            <ion-icon [name]="item.icon"></ion-icon>
+          </div>
+
+          <ion-label>
+            <h3>{{ item.title }}</h3>
+
+            <p class="history-date">{{ item.date | date:'fullDate' }}</p>
+
+            <p class="history-description">{{ item.description }}</p>
+          </ion-label>
+
+          <div class="status-chip" slot="end">
+            <ion-chip [outline]="true" [color]="item.statusColor">
+              <ion-label>{{ item.status }}</ion-label>
+            </ion-chip>
+          </div>
+        </ion-item>
+      </ion-card>
+    </ion-list>
   </div>
 
+  <!-- Tampilan Saat Tidak Ada Data -->
 
-  <!-- Filter Popover -->
-  <ion-popover trigger="filter-trigger" triggerAction="click" side="bottom" alignment="end">
+  <div *ngIf="!isLoading && filteredRiwayat.length === 0" class="empty-state">
+    <ion-icon name="file-tray-outline"></ion-icon>
+
+    <h2>Tidak Ada Riwayat</h2>
+
+    <p>Tidak ada data yang cocok dengan filter atau pencarian Anda.</p>
+  </div>
+
+  <!-- Popover untuk Filter Tanggal -->
+
+  <ion-popover
+    trigger="filter-trigger"
+    triggerAction="click"
+    side="bottom"
+    alignment="end"
+  >
     <ng-template>
-      <ion-content class="ion-padding">
+      <ion-list>
+        <ion-list-header>Filter Berdasarkan Tanggal</ion-list-header>
+
         <ion-item>
-          <ion-label position="stacked">Bulan</ion-label>
-          <ion-select [(ngModel)]="selectedMonth" (ionChange)="filterRiwayat()">
-            <ion-select-option *ngFor="let month of months" [value]="month.value">
-              {{ month.label }}
-            </ion-select-option>
+          <ion-label>Bulan</ion-label>
+
+          <ion-select [(ngModel)]="selectedMonth" (ionChange)="applyFilters()">
+            <ion-select-option
+              *ngFor="let month of months"
+              [value]="month.value"
+              >{{ month.label }}</ion-select-option
+            >
           </ion-select>
         </ion-item>
+
         <ion-item>
-          <ion-label position="stacked">Tahun</ion-label>
-          <ion-select [(ngModel)]="selectedYear" (ionChange)="filterRiwayat()">
-            <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+          <ion-label>Tahun</ion-label>
+
+          <ion-select [(ngModel)]="selectedYear" (ionChange)="applyFilters()">
+            <ion-select-option *ngFor="let year of years" [value]="year"
+              >{{ year }}</ion-select-option
+            >
           </ion-select>
         </ion-item>
-      </ion-content>
+
+        <ion-item button (click)="resetFilters()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+
+          <ion-label color="primary">Reset Filter</ion-label>
+        </ion-item>
+      </ion-list>
     </ng-template>
   </ion-popover>
 </ion-content>
-
-<!-- Floating Footer -->
-<ion-toolbar class="footer-toolbar">
-  <ion-buttons class="footer-menu" expand="block">
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('beranda')">
-      <ion-icon name="home-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('perusahaan')">
-      <ion-icon name="business-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="footer-icon" (click)="goTo('akun')">
-      <ion-icon name="person-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>

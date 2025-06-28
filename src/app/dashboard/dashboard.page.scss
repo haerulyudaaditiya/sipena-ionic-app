@@ -51,21 +51,18 @@ ion-header {
   object-fit: cover;
 }
 
-.custom-searchbar {
-  --background: #27547f;
-  --color: white;
-  --icon-color: white;
-  border-radius: 15px;
-  margin-top: 110px;
+.form-wrapper {
+  padding: 0;
 }
 
 .clock-card {
   background: #ffffff;
   border-radius: 20px;
   padding: 20px;
-  margin: 20px auto;
+  margin-top: 0;
+  margin-bottom: 16px;
   text-align: center;
-  max-width: 300px;
+  margin-top: 101px;
 }
 
 .clock-time {
@@ -83,55 +80,70 @@ ion-header {
 .menu-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 15px;
-  margin-top: 30px;
-}
-
-.form-wrapper {
-  padding: 0 16px;
+  padding: 20px;
+  margin-top: 0; /* DIUBAH: Margin atas tidak perlu lagi */
+  margin-bottom: 16px; /* DIUBAH: Mengatur jarak ke elemen bawah */
 }
 
 .icon-col {
   text-align: center;
   color: #000;
-
-  .circle-icon {
-    background: #083f73;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    ion-icon {
-      font-size: 28px;
-      color: white;
-    }
-  }
-
-  p {
-    font-size: 13px;
-    margin-top: 8px;
-  }
 }
 
+.icon-col .circle-icon {
+  background: #083f73;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-col .circle-icon ion-icon {
+  font-size: 28px;
+  color: white;
+}
+
+.icon-col p {
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* --- Aturan yang sudah ada untuk info-card --- */
 .info-card {
-  margin-top: 16px;
+  margin-top: 0;
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.info-card ion-label h2 {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.info-card ion-label p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* --- DITAMBAHKAN: Style untuk background ikon agar sama seperti summary-card --- */
+.info-card .icon-background {
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  ion-icon {
-    font-size: 24px;
-  }
-  ion-label h2 {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
-  ion-label p {
-    font-size: 14px;
-    color: #666;
-  }
+  background-color: #f0f7ff; /* Warna biru muda yang sama */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.info-card .icon-background ion-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary); /* Mengatur warna ikon menjadi warna primary tema */
 }
 
 .footer-toolbar {
@@ -150,23 +162,85 @@ ion-header {
 
 .footer-icon {
   padding: 10px;
-  border-radius: 12px; // sedikit membulat agar tetap modern
+  border-radius: 12px; /* sedikit membulat agar tetap modern */
   transition: background 0.2s ease;
-  
-  ion-icon {
-    font-size: 22px;
-    color: #083f73;
-    transition: color 0.2s ease;
-  }
+}
+
+.footer-icon ion-icon {
+  font-size: 22px;
+  color: #083f73;
+  transition: color 0.2s ease;
 }
 
 .footer-icon.active {
   background: rgba(8, 63, 115, 0.15);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
+}
 
-  ion-icon {
-    color: #003b6f;
-    font-weight: bold;
-  }
+.footer-icon.active ion-icon {
+  color: #003b6f;
+  font-weight: bold;
+}
+
+.notification-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 10px;
+  --padding-start: 5px;
+  --padding-end: 5px;
+  --padding-top: 2px;
+  --padding-bottom: 2px;
+}
+
+.summary-card {
+  border-radius: 16px;
+  padding: 10px;
+  margin-bottom: 16px;
+  margin-top: 0px;
+  --background: #ffffff;
+}
+
+.summary-card ion-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 88px;
+}
+
+.summary-card .icon-background {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.summary-card .icon-background ion-icon {
+  font-size: 24px;
+}
+
+.summary-card ion-label h2 {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #083f73;
+}
+
+.summary-card ion-label p {
+  font-size: 14px;
+  color: #666;
+}
+
+.summary-card ion-note {
+  font-size: 18px;
+  font-weight: 700;
 }

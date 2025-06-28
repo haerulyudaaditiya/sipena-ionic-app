@@ -1,19 +1,23 @@
-ion-content {
+/* --- KONTEN UTAMA & CONTAINER --- */
+.content-wrapper {
   --background: #003b6f;
-  padding: 16px;
-  // padding-top: 16px; 
-  padding-bottom: 80px; 
-}
-  
-ion-header {
-  --background: #ffffff;
-  position: relative;
-  z-index: 2;
-  padding-top: env(safe-area-inset-top);
 }
 
+.page-container {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- HEADER --- */
 .centered-toolbar {
-  position: relative;
+  --background: #ffffff;
+  --min-height: 56px;
+}
+
+.back-icon {
+  font-size: 24px;
+  color: #003b6f;
 }
 
 .centered-title {
@@ -21,99 +25,146 @@ ion-header {
   left: 0;
   right: 0;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 18px;
+  color: #000;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.form-wrapper {
-  padding: 0 16px;
-  margin-top: 20px; 
-}
-
-.menu-card {
+/* --- KARTU UTAMA --- */
+.main-card {
+  width: 100%;
+  max-width: 420px;
+  margin: 0;
   background: #ffffff;
   border-radius: 20px;
-  padding: 15px;
-  margin: 0 20px auto; // tengah horizontal
+  padding: 24px 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.submit-button {
-  margin-top: 16px;
-  padding: 12px 16px; /* Padding agar tombol lebih besar dan mudah ditekan */
-  font-size: 16px;
+.card-header-text {
+  text-align: center;
+  margin-bottom: 24px;
 }
 
-ion-card {
-  margin-bottom: 100px; /* Memberikan ruang antara card presensi dan tombol kirim */
+.card-header-text h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #083f73;
+  margin: 0 0 4px 0;
 }
 
-ion-card img {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 12px;
+.card-header-text p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* --- TAMPILAN MENU (ICON) --- */
+.menu-grid {
+  padding: 0;
 }
 
 .icon-col {
-    text-align: center;
-    color: #000;
-
-    .circle-icon {
-        background: #083f73;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        ion-icon {
-        font-size: 28px;
-        color: white;
-        }
-    }
-
-    p {
-        font-size: 13px;
-        margin-top: 8px;
-    }
+  text-align: center;
 }
 
-.footer-toolbar {
-  bottom: 0;
-  width: 100%;
-  --background: #ffffff;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  padding: 6px 0;
+.icon-col p {
+  color: #333;
+  font-size: 14px;
+  margin-top: 12px;
+  font-weight: 500;
 }
 
-.footer-menu {
+.circle-icon {
+  background: #083f73;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
 }
 
-.footer-icon {
-  padding: 10px;
-  border-radius: 12px; // sedikit membulat agar tetap modern
-  transition: background 0.2s ease;
-  
-  ion-icon {
-    font-size: 22px;
-    color: #083f73;
-    transition: color 0.2s ease;
-  }
+.icon-col:active .circle-icon {
+  transform: scale(0.95);
 }
 
-.footer-icon.active {
-  background: rgba(8, 63, 115, 0.15);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+.circle-icon ion-icon {
+  font-size: 32px;
+  color: white;
+}
+
+/* --- TAMPILAN DETAIL PRESENSI --- */
+.presensi-details-wrapper {
+  width: 100%;
+}
+
+.presensi-image {
+  width: 100%;
+  height: auto;
   border-radius: 12px;
+  display: block;
+  margin-bottom: 24px;
+  border: 1px solid #eee;
+}
 
-  ion-icon {
-    color: #003b6f;
-    font-weight: bold;
-  }
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detail-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #888888;
+  margin-bottom: 4px;
+}
+
+.detail-item span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
+}
+
+
+/* --- TOMBOL AKSI --- */
+.action-buttons {
+  margin-top: 24px;
+}
+
+.submit-button {
+  --background: #083f73;
+  --background-activated: #002f5e;
+  --border-radius: 12px;
+  --box-shadow: none;
+  font-weight: bold;
+  height: 48px;
+  text-transform: none;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.cancel-button {
+  --border-color: #888888;
+  --color: #666666;
+  --border-radius: 12px;
+  --border-width: 1.5px;
+  height: 48px;
+  text-transform: none;
+  font-size: 16px;
 }

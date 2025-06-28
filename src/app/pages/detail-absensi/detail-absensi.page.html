@@ -1,0 +1,114 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar class="header-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div class="centered-title">Detail Absensi</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Indikator Loading -->
+  <div *ngIf="isLoading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Memuat detail...</p>
+  </div>
+
+  <!-- Konten Utama -->
+  <div *ngIf="!isLoading && attendanceDetail">
+    <div class="page-container">
+      <ion-card class="details-card">
+        <ion-card-header>
+          <ion-card-title
+            >{{ attendanceDetail.check_in | date:'fullDate' }}</ion-card-title
+          >
+          <ion-card-subtitle>
+            <ion-chip
+              [outline]="true"
+              [color]="attendanceDetail.status === 'Tepat Waktu' ? 'success' : 'warning'"
+            >
+              <ion-icon
+                [name]="attendanceDetail.status === 'Tepat Waktu' ? 'checkmark-circle' : 'alert-circle'"
+              ></ion-icon>
+              <ion-label
+                >{{ attendanceDetail.status || 'Tepat Waktu' }}</ion-label
+              >
+            </ion-chip>
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <!-- Rincian Waktu -->
+          <div class="section-title">Rincian Waktu</div>
+          <ion-item lines="full" class="detail-item">
+            <div class="icon-background" slot="start">
+              <ion-icon name="log-in-outline"></ion-icon>
+            </div>
+            <ion-label
+              ><h3>Waktu Check-in</h3>
+              <p>
+                {{ attendanceDetail.check_in | date:'HH:mm:ss' }}
+              </p></ion-label
+            >
+          </ion-item>
+          <ion-item lines="full" class="detail-item">
+            <div class="icon-background" slot="start">
+              <ion-icon name="log-out-outline"></ion-icon>
+            </div>
+            <ion-label
+              ><h3>Waktu Check-out</h3>
+              <p>
+                {{ attendanceDetail.check_out ? (attendanceDetail.check_out |
+                date:'HH:mm:ss') : '-' }}
+              </p></ion-label
+            >
+          </ion-item>
+          <ion-item lines="none" class="detail-item">
+            <div class="icon-background" slot="start">
+              <ion-icon name="hourglass-outline"></ion-icon>
+            </div>
+            <ion-label
+              ><h3>Durasi Kerja</h3>
+              <p>{{ workDuration || '-' }}</p></ion-label
+            >
+          </ion-item>
+
+          <!-- Bukti Foto -->
+          <div class="section-title">Bukti Foto</div>
+          <div class="photo-gallery">
+            <!-- DIUBAH: Memanggil fungsi getImageUrl untuk semua foto -->
+            <div
+              class="photo-container"
+              (click)="openImage(attendanceDetail.check_in_photo_url)"
+            >
+              <img
+                [src]="getImageUrl(attendanceDetail.check_in_photo_url)"
+                alt="Foto Check-in"
+                class="attendance-photo"
+              />
+              <div class="photo-label">FOTO MASUK</div>
+            </div>
+            <div
+              class="photo-container"
+              (click)="openImage(attendanceDetail.check_out_photo_url)"
+            >
+              <img
+                [src]="getImageUrl(attendanceDetail.check_out_photo_url)"
+                [class.placeholder]="!attendanceDetail.check_out_photo_url"
+                alt="Foto Check-out"
+                class="attendance-photo"
+              />
+              <div class="photo-label">FOTO KELUAR</div>
+            </div>
+          </div>
+
+          <!-- DIUBAH: Bagian Lokasi menjadi Peta -->
+          <div class="section-title">Peta Lokasi Presensi</div>
+          <div id="map-container" class="map-container"></div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

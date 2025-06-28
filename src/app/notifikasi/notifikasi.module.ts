@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { NotifikasiPageRoutingModule } from './notifikasi-routing.module';
 
 import { NotifikasiPage } from './notifikasi.page';
+import { CustomAlertComponentModule } from '../components/custom-alert/custom-alert.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NotifikasiPageRoutingModule
+    NotifikasiPageRoutingModule,
+    CustomAlertComponentModule
   ],
   declarations: [NotifikasiPage]
 })

@@ -1,84 +1,137 @@
+/* --- KONTEN UTAMA --- */
 ion-content.notification-content {
-  --background: #003b6f;
-  padding: 16px;
-  padding-bottom: 100px;
-  overflow-y: auto;
+  --background: #003b6f; /* DIUBAH: Menggunakan warna primer gelap */
+  --padding-top: 16px;
 }
 
-.notif-card {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+/* --- HEADER --- */
+ion-header {
+  --background: #ffffff;
 }
-
-ion-card-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #003b6f;
-}
-
-ion-card-subtitle {
-  font-size: 12px;
-  color: #6c757d;
-}
-
-.no-notif {
-  text-align: center;
-  color: #ffffff;
-  margin-top: 40px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
 .centered-toolbar {
   position: relative;
 }
-
 .centered-title {
   position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-weight: 500;
-  font-size: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.footer-toolbar {
-  position: fixed;
+  left: 50px;
+  right: 50px;
+  top: 0;
   bottom: 0;
-  width: 100vw;
-  --background: #ffffff;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  padding: 6px 0;
-}
-
-.footer-menu {
   display: flex;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.footer-icon {
-  --padding-start: 0;
-  --padding-end: 0;
-  --background-hover: rgba(0, 59, 111, 0.1); // saat tap
-  --border-radius: 8px;
-  --box-shadow: none;
-  --color: #083f73;
-  font-size: 20px;
-
-  ion-icon {
-    font-size: 24px;
-    color: #083f73;
-  }
-
-  width: 60px;
-  height: 44px;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  color: #000;
+}
+.title-badge {
+  font-size: 11px;
+  font-weight: bold;
+  --padding-start: 6px;
+  --padding-end: 6px;
+}
+
+/* --- KARTU NOTIFIKASI --- */
+.notif-card {
+  --background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0 16px 16px 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: relative;
+}
+.notif-card:active {
+  transform: scale(0.98);
+}
+
+/* DIUBAH: Style untuk notifikasi yang sudah dibaca */
+.notif-card.card-read {
+  --background: #f8f9fa; /* Latar kartu menjadi abu-abu sangat terang */
+}
+/* Juga sembunyikan titik biru jika sudah dibaca */
+.notif-card.card-read .unread-dot {
+  display: none;
+}
+
+.notif-card ion-item {
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --background: transparent;
+  align-items: flex-start;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.unread-dot {
+  width: 9px;
+  height: 9px;
+  background: #2998ff;
+  border-radius: 50%;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  border: 1px solid white;
+}
+
+/* Latar belakang ikon */
+.icon-background {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #e9f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  margin-top: 4px;
+}
+.icon-background ion-icon {
+  font-size: 22px;
+  color: #0056b3;
+}
+
+/* --- TIPOGRAFI DALAM KARTU --- */
+.notif-card ion-label h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #083f73;
+  margin: 0 0 4px 0;
+}
+.notif-card .notif-content {
+  font-size: 14px;
+  color: #333333;
+  white-space: normal;
+  line-height: 1.4;
+}
+.notif-card .notif-date {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 8px;
+}
+
+/* --- TAMPILAN KOSONG (EMPTY STATE) --- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  text-align: center;
+  color: #ffffff; /* Warna teks menjadi putih agar terlihat */
+  opacity: 0.8;
+}
+.empty-state ion-icon {
+  font-size: 80px;
+  margin-bottom: 16px;
+}
+.empty-state h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+.empty-state p {
+  font-size: 14px;
+  max-width: 250px;
+  margin-top: 8px;
+  line-height: 1.5;
 }

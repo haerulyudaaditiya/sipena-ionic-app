@@ -1,116 +1,97 @@
+/* --- KONTEN UTAMA --- */
 ion-content {
-  --background: #004080; // biru gelap
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  height: 100%; // pastikan ambil tinggi penuh
-  --padding-bottom: 0; // <-- tambahkan ini!
-  --padding-top: 0;    // <-- dan ini juga
+  --background: #003b6f;/* Latar dasar putih */
 }
 
-img.logo {
-  width: 150px;          /* Sesuaikan ukuran */
-  height: 150px;         /* Sama dengan width untuk membulatkan */
-  border-radius: 50%;    /* Inilah yang membuat gambar menjadi bulat */
-  object-fit: cover;     /* Agar gambar tidak gepeng */
-
-}
-
-.login-wrapper {
-  width: 100%;
-  max-width: 400px;
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 30px 20px;
-  height: 100%; // <--- penting!
+/* --- BAGIAN ATAS (BIRU) --- */
+.top-section {
+  background: #ffffff;
+  color: #003b6f;
+  padding: 50px 24px 90px 24px; /* Padding bawah lebih besar untuk efek kurva */
+  text-align: center;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
 }
 
 .logo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto; // <--- Ini yang penting untuk center
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
 }
 
-h2 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-  text-align: center;
+.top-section h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
 }
 
-.login-card {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.top-section p {
+  font-size: 16px;
+  opacity: 0.85;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* --- BAGIAN BAWAH (FORM) --- */
+.bottom-section {
+  margin-top: -60px; /* Konten ditarik ke atas menimpa bagian biru */
+  padding: 0 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.form-wrapper {
   background: #ffffff;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: 0 -1px 40px rgba(0, 0, 0, 0.15);
 }
 
-ion-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-// ion-input {
-//   --padding-start: 12px;
-//   --padding-end: 12px;
-//   --padding-top: 16px;
-//   --padding-bottom: 8px;
-//   --highlight-color-focused: #00b4d8;
-//   font-size: 16px;
-// }
-
-ion-input {
-  --padding-top: 4px;
-  --padding-bottom: 4px;
-  font-size: 15px;
-  --highlight-color-focused: #00b4d8;
-}
-
-ion-checkbox {
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-  font-size: 14px;
-  white-space: normal; /* penting agar teks bisa turun ke bawah */
-  line-height: 1.4;
-  --padding-start: 0;
-  --padding-end: 0;
-  max-width: 100%;
-}
-
-ion-item {
+/* --- INPUT FIELDS --- */
+.input-item {
+  --background: #f8f9fa; /* Latar input sedikit abu-abu */
+  --padding-start: 16px;
   --min-height: 56px;
-  --padding-top: 6px;
-  --padding-bottom: 6px;
-  font-size: 15px;
+  --border-radius: 12px;
+  --border-width: 0; /* Hapus border bawaan */
+  --highlight-height: 0; /* Hapus highlight saat focus */
+  margin-bottom: 20px;
 }
 
-.login-btn {
-  --background: linear-gradient(135deg, #0077b6, #00b4d8);
-  --color: white;
-  --border-radius: 20px;
+.input-item ion-icon {
+  color: #888888;
+}
+
+.toggle-password-icon {
+  cursor: pointer;
+}
+
+/* --- LINK LUPA PASSWORD --- */
+.forgot-password-link {
+  text-align: right;
+  margin-top: -12px;
+  margin-bottom: 24px;
+}
+
+.forgot-password-link a {
+  font-size: 14px;
+  color: #0056b3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* --- TOMBOL LOGIN --- */
+.login-button {
+  --background: #083f73;
+  --background-activated: #002f5e;
+  --border-radius: 12px;
+  --box-shadow: none;
   font-weight: bold;
-  text-transform: uppercase;
+  height: 50px;
+  text-transform: none;
+  font-size: 16px;
 }
 
-.register-link {
-  margin-top: 10px;
-  text-align: center;
-
-  a {
-    color: #007bff;
-    text-decoration: underline;
-    cursor: pointer;
-  } 
+.login-button[disabled] {
+  opacity: 0.7;
 }

@@ -26,21 +26,26 @@ ion-header {
   transform: translateY(-50%);
 }
 
-
 .setting-list {
   margin-top: 1rem;
   border-radius: 12px;
+
+  /* DITAMBAHKAN: Padding untuk memberi jarak dari tepi layar */
+  padding-left: 16px;
+  padding-right: 16px;
 
   ion-list-header {
     font-weight: bold;
     font-size: 1rem;
     color: #444;
     margin-top: 1rem;
+    /* DIHAPUS: Header tidak perlu margin samping, ia akan mengikuti padding parent */
   }
 
   ion-item {
     --border-radius: 10px;
-    margin: 6px 10px;
+    /* DIUBAH: Hapus margin samping (10px) karena sudah diatur oleh padding parent */
+    margin: 8px 0;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     transition: all 0.2s ease-in-out;
 
@@ -57,46 +62,33 @@ ion-header {
     }
   }
 
-  .logout-btn {
-    margin-top: 2rem;
-    background: #fff4f4;
-    ion-icon {
-      color: #d00000;
-    }
-    ion-label {
-      color: #d00000;
-      font-weight: bold;
-    }
+  .logout-footer {
+    /* DITAMBAHKAN: Memberi jarak dari elemen di atasnya */
+    margin-top: 2rem; /* Anda bisa menyesuaikan nilainya, misal 2rem, 32px, dll. */
+
+    /* Properti yang sudah ada sebelumnya tidak perlu diubah */
+    bottom: 0;
+    background: #ffffff;
+    padding: 1rem;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
+    z-index: 10;
   }
 }
 
-.logout-footer {
-  bottom: 0;
-  background: #ffffff;
-  padding: 1rem;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
-  z-index: 10;
+.logout-footer ion-button.logout-button {
+  /* Atur warna utama tombol */
+  --background: #d00000; /* Warna latar merah */
+  --color: #ffffff; /* Warna teks dan ikon menjadi putih */
 
-  ion-button.logout-button {
-    --border-color: #d00000;
-    --color: #333;
-    --background: transparent;
-    --border-radius: 12px;
-    font-weight: bold;
-    width: 100%;
-    transition: 0.2s ease-in-out;
+  /* Atur warna saat tombol ditekan/aktif */
+  --background-activated: #a00000; /* Merah yang sedikit lebih gelap */
 
-    ion-icon {
-        color: #333;
-    }
-
-    &:active {
-        --background: #d00000; 
-        --color: #333;
-    }
-    }
+  /* Properti lainnya untuk tampilan */
+  --border-radius: 12px;
+  --border-width: 0px; /* Tidak perlu border untuk tombol solid */
+  font-weight: bold;
+  transition: 0.2s ease-in-out;
 }
-
 
 .footer-toolbar {
   bottom: 0;
@@ -116,7 +108,7 @@ ion-header {
   padding: 10px;
   border-radius: 12px; // sedikit membulat agar tetap modern
   transition: background 0.2s ease;
-  
+
   ion-icon {
     font-size: 22px;
     color: #083f73;

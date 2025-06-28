@@ -2,74 +2,123 @@
   <ion-toolbar class="centered-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="goBack()">
-        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <div slot="primary" class="centered-title">Profil</div>
+    <div slot="primary" class="centered-title">Profil Karyawan</div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="profile-container">
-    <div class="card">
-
+    <ion-card class="profile-card">
       <div class="avatar-wrapper">
         <ion-avatar class="avatar">
-          <img [src]="user.photo" alt="Avatar"/>
+          <img
+            *ngIf="employee.photo; else defaultAvatar"
+            [src]="getImageUrl(employee.photo)"
+            alt="Avatar"
+          />
+          <ng-template #defaultAvatar>
+            <img
+              src="https://archive.org/download/instagram-plain-round/instagram%20dip%20in%20hair.jpg"
+              alt="Default Avatar"
+            />
+          </ng-template>
         </ion-avatar>
-        <h2 class="name">{{ nama }}</h2>
-        <p class="position">{{ jabatan }}</p>
+        <h2 class="name">{{ employee.name || 'Nama Karyawan' }}</h2>
+        <p class="position">
+          {{ employee.position || 'Jabatan tidak diatur' }}
+        </p>
       </div>
 
       <div class="info-list">
         <div class="info-item">
-          <ion-icon name="card-outline" slot="start"></ion-icon>
+          <div class="icon-background">
+            <ion-icon name="card-outline"></ion-icon>
+          </div>
           <div class="info-content">
             <label>NIK</label>
-            <span>{{ nik }}</span>
+            <span>{{ employee.employee_id || 'Tidak ada data' }}</span>
           </div>
         </div>
-
         <div class="info-item">
-          <ion-icon name="document-outline" slot="start"></ion-icon>
+          <div class="icon-background">
+            <ion-icon name="document-outline"></ion-icon>
+          </div>
           <div class="info-content">
             <label>NPWP</label>
-            <span>{{ npwp }}</span>
+            <span>{{ employee.npwp || 'Tidak ada data' }}</span>
           </div>
         </div>
-
         <div class="info-item">
-          <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+          <div class="icon-background">
+            <ion-icon name="briefcase-outline"></ion-icon>
+          </div>
           <div class="info-content">
             <label>Status Kepegawaian</label>
-            <span>{{ statusKepegawaian }}</span>
+            <span>
+              <ng-container *ngIf="employee.status === 'active'"
+                >Aktif</ng-container
+              >
+              <ng-container *ngIf="employee.status === 'inactive'"
+                >Tidak Aktif</ng-container
+              >
+              <ng-container *ngIf="!employee.status"
+                >Tidak ada data</ng-container
+              >
+            </span>
           </div>
         </div>
-
         <div class="info-item">
-          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <div class="icon-background">
+            <ion-icon name="mail-outline"></ion-icon>
+          </div>
           <div class="info-content">
             <label>Email</label>
-            <span>{{ email }}</span>
+            <span>{{ employee.email || 'Tidak ada data' }}</span>
           </div>
         </div>
-
         <div class="info-item">
-          <ion-icon name="call-outline" slot="start"></ion-icon>
+          <div class="icon-background">
+            <ion-icon name="call-outline"></ion-icon>
+          </div>
           <div class="info-content">
             <label>Nomor Telepon</label>
-            <span>{{ noTelepon }}</span>
+            <span>{{ employee.phone || 'Tidak ada data' }}</span>
           </div>
         </div>
-
         <div class="info-item">
-          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          <div class="icon-background">
+            <ion-icon name="business-outline"></ion-icon>
+          </div>
           <div class="info-content">
-            <label>Keterangan SP</label>
-            <span>{{ keteranganSP }}</span>
+            <label>Departemen</label>
+            <span>{{ employee.department || 'Tidak ada data' }}</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="icon-background">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <label>Alamat</label>
+            <span>{{ employee.address || 'Tidak ada data' }}</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="icon-background">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <label>Tanggal Perekrutan</label>
+            <span
+              >{{ employee.hire_date ? (employee.hire_date | date:'longDate') :
+              'Tidak ada data' }}</span
+            >
           </div>
         </div>
       </div>
-    </div>
+    </ion-card>
   </div>
 </ion-content>

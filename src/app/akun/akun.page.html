@@ -2,12 +2,15 @@
   <ion-toolbar class="centered-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="goBack()">
-        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        <ion-icon
+          name="chevron-back-outline"
+          slot="icon-only"
+          style="font-size: 24px"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
     <div slot="primary" class="centered-title">Akun</div>
-    <ion-buttons slot="end">
-    </ion-buttons>
+    <ion-buttons slot="end"> </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,17 +25,10 @@
       <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
       <ion-label>Ganti Kata Sandi</ion-label>
     </ion-item>
-    <ion-item button (click)="changeLanguage()">
+    <!-- <ion-item button (click)="changeLanguage()">
       <ion-icon name="language-outline" slot="start"></ion-icon>
       <ion-label>Bahasa</ion-label>
-    </ion-item>
-
-    <ion-list-header>Keamanan</ion-list-header>
-    <ion-item button (click)="viewLoginHistory()">
-      <ion-icon name="time-outline" slot="start"></ion-icon>
-      <ion-label>Riwayat Login</ion-label>
-    </ion-item>
-
+    </ion-item> -->
     <ion-list-header>Bantuan & Tentang</ion-list-header>
     <ion-item button (click)="openGuide()">
       <ion-icon name="help-circle-outline" slot="start"></ion-icon>
@@ -48,7 +44,12 @@
     </ion-item>
 
     <div class="logout-footer">
-      <ion-button expand="block" fill="outline" (click)="logout()" class="logout-button">
+      <ion-button
+        expand="block"
+        fill="solid"
+        (click)="logout()"
+        class="logout-button"
+      >
         <ion-icon name="log-out-outline" slot="start"></ion-icon>
         Logout
       </ion-button>

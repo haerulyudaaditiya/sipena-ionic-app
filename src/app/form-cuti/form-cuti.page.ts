@@ -1,170 +1,22 @@
-// import { Component, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { AlertController } from '@ionic/angular';
-// import { Location } from '@angular/common';
-
-// @Component({
-//   selector: 'app-form-cuti',
-//   templateUrl: './form-cuti.page.html',
-//   styleUrls: ['./form-cuti.page.scss'],
-//   standalone: false,
-// })
-// export class FormCutiPage implements OnInit {
-//   jenisCuti: string = '';
-//   startTime: string = '';
-//   endTime: string = '';
-//   alasan: string = '';
-//   kontakCuti: string = '';
-
-//   showStartTimePicker = false;
-//   showEndTimePicker = false;
-
-//   tempStartTime: string = '';
-//   tempEndTime: string = '';
-
-//   constructor(private router: Router, private alertController: AlertController, private location: Location) {}
-
-//   ngOnInit() {}
-
-//   onTempStartTimeChange(event: any) {
-//     console.log('Start time selected:', event.detail.value);
-//     this.tempStartTime = event.detail.value;
-//   }
-
-//   onTempEndTimeChange(event: any) {
-//     console.log('End time selected:', event.detail.value);
-//     this.tempEndTime = event.detail.value;
-//   }
-
-//   confirmStartTime() {
-//     if (this.tempStartTime && typeof this.tempStartTime === 'string') {
-//       try {
-//         const isoDate = new Date(this.tempStartTime);
-//         if (!isNaN(isoDate.getTime())) {
-//           this.startTime = this.formatDateTime(isoDate);
-//         } else {
-//           console.warn('Tanggal mulai tidak valid:', this.tempStartTime);
-//           this.startTime = '';
-//         }
-//       } catch (error) {
-//         console.error('Error parsing start time:', error);
-//         this.startTime = '';
-//       }
-//     }
-//     this.showStartTimePicker = false;
-//   }
-
-//   confirmEndTime() {
-//     if (this.tempEndTime && typeof this.tempEndTime === 'string') {
-//       try {
-//         const isoDate = new Date(this.tempEndTime);
-//         if (!isNaN(isoDate.getTime())) {
-//           this.endTime = this.formatDateTime(isoDate);
-//         } else {
-//           console.warn('Tanggal selesai tidak valid:', this.tempEndTime);
-//           this.endTime = '';
-//         }
-//       } catch (error) {
-//         console.error('Error parsing end time:', error);
-//         this.endTime = '';
-//       }
-//     }
-//     this.showEndTimePicker = false;
-//   }
-
-//   formatDateTime(date: Date): string {
-//     const options: Intl.DateTimeFormatOptions = {
-//       year: 'numeric',
-//       month: 'long',
-//       day: 'numeric',
-//       hour: '2-digit',
-//       minute: '2-digit',
-//       hour12: false,
-//     };
-//     return date.toLocaleString('id-ID', options); // Contoh: "4 Juni 2025 22.15"
-//   }
-
-
-//   pad(num: number): string {
-//     return num < 10 ? '0' + num : num.toString();
-//   }
-
-//   getFormattedDate(date: Date): string {
-//     if (!date || isNaN(date.getTime())) return 'Format tanggal tidak valid';
-
-//     const options: Intl.DateTimeFormatOptions = {
-//       weekday: undefined,
-//       year: 'numeric',
-//       month: 'long',
-//       day: 'numeric',
-//       hour: '2-digit',
-//       minute: '2-digit',
-//       hour12: false,
-//     };
-
-//     return date.toLocaleString('id-ID', options); // hasil: 1 Juni 2025 14.30
-//   }
-
-//   async ajukanCuti() {
-//     if (this.jenisCuti && this.startTime && this.endTime && this.alasan) {
-//       const dataCuti = {
-//         jenisCuti: this.jenisCuti,
-//         startTime: this.startTime,
-//         endTime: this.endTime,
-//         alasan: this.alasan,
-//         kontakCuti: this.kontakCuti,
-//       };
-//       console.log('Data Cuti Diajukan:', dataCuti);
-
-//       const alert = await this.alertController.create({
-//         header: 'Sukses',
-//         message: 'Cuti berhasil diajukan!',
-//         buttons: ['OK'],
-//       });
-//       await alert.present();
-//     } else {
-//       const alert = await this.alertController.create({
-//         header: 'Gagal',
-//         message: 'Mohon lengkapi semua data cuti.',
-//         buttons: ['OK'],
-//       });
-//       await alert.present();
-//     }
-//   }
-
-//   goTo(route: string) {
-//     switch (route) {
-//       case 'perusahaan':
-//         this.router.navigate(['/about']);
-//         break;
-//       case 'beranda':
-//         this.router.navigate(['/dashboard']);
-//         break;
-//       case 'akun':
-//         this.router.navigate(['/akun']);
-//         break;
-//       default:
-//         console.warn('Rute tidak dikenali:', route);
-//     }
-//   }
-
-//   goBack() {
-//     this.location.back();
-//   }
-// }
-
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { Location } from '@angular/common';
+import { LoadingController, ModalController } from '@ionic/angular'; // DIUBAH: AlertController diganti ModalController
+import { firstValueFrom } from 'rxjs';
+import { CustomAlertComponent } from '../components/custom-alert/custom-alert.component'; // Import komponen alert kustom
+import {
+  LeaveRequestPayload,
+  LeaveRequestService,
+} from '../services/leave-request.service';
 
 @Component({
   selector: 'app-form-cuti',
   templateUrl: './form-cuti.page.html',
   styleUrls: ['./form-cuti.page.scss'],
-  standalone: false,
+  standalone: false
 })
 export class FormCutiPage implements OnInit {
+  // Properti yang sudah Anda miliki
   jenisCuti: string = '';
   startTime: string = '';
   endTime: string = '';
@@ -177,63 +29,166 @@ export class FormCutiPage implements OnInit {
   tempStartTime: string = '';
   tempEndTime: string = '';
 
-  constructor(private router: Router, private alertController: AlertController, private location: Location) {}
+  isLoading = false;
+
+  constructor(
+    private router: Router,
+    private modalCtrl: ModalController, // DIUBAH: Menggunakan ModalController
+    private loadingController: LoadingController,
+    private location: Location,
+    private leaveRequestService: LeaveRequestService
+  ) {}
 
   ngOnInit() {}
 
+  // --- Logika Pemilih Tanggal (Tetap sama) ---
   onTempStartTimeChange(event: any) {
-    console.log('Start time selected:', event.detail.value);
     this.tempStartTime = event.detail.value;
   }
-
   onTempEndTimeChange(event: any) {
-    console.log('End time selected:', event.detail.value);
     this.tempEndTime = event.detail.value;
   }
-
   confirmStartTime() {
-    if (this.tempStartTime && typeof this.tempStartTime === 'string') {
-      try {
-        const isoDate = new Date(this.tempStartTime);
-        if (!isNaN(isoDate.getTime())) {
-          this.startTime = this.formatDateOnly(isoDate);
-        } else {
-          console.warn('Tanggal mulai tidak valid:', this.tempStartTime);
-          this.startTime = '';
-        }
-      } catch (error) {
-        console.error('Error parsing start time:', error);
-        this.startTime = '';
-      }
+    if (this.tempStartTime) {
+      this.startTime = this.formatDateOnly(new Date(this.tempStartTime));
     }
     this.showStartTimePicker = false;
   }
-
   confirmEndTime() {
-    if (this.tempEndTime && typeof this.tempEndTime === 'string') {
-      try {
-        const isoDate = new Date(this.tempEndTime);
-        if (!isNaN(isoDate.getTime())) {
-          this.endTime = this.formatDateOnly(isoDate);
-        } else {
-          console.warn('Tanggal selesai tidak valid:', this.tempEndTime);
-          this.endTime = '';
-        }
-      } catch (error) {
-        console.error('Error parsing end time:', error);
-        this.endTime = '';
-      }
+    if (this.tempEndTime) {
+      this.endTime = this.formatDateOnly(new Date(this.tempEndTime));
     }
     this.showEndTimePicker = false;
   }
-
   formatDateOnly(date: Date): string {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
-    return date.toLocaleDateString('id-ID', options); // Contoh: "5 Juni 2025"
+    return date.toLocaleDateString('id-ID', options);
+  }
+
+  // --- FUNGSI UTAMA YANG DIPERBAIKI ---
+  async ajukanCuti() {
+    // --- Blok Validasi Detail ---
+    if (!this.jenisCuti) {
+      this.showCustomAlert(
+        'warning',
+        'Validasi Gagal',
+        'Mohon pilih jenis cuti.'
+      );
+      return;
+    }
+    if (!this.tempStartTime) {
+      this.showCustomAlert(
+        'warning',
+        'Validasi Gagal',
+        'Mohon tentukan tanggal mulai cuti.'
+      );
+      return;
+    }
+    if (!this.tempEndTime) {
+      this.showCustomAlert(
+        'warning',
+        'Validasi Gagal',
+        'Mohon tentukan tanggal selesai cuti.'
+      );
+      return;
+    }
+    if (!this.alasan || this.alasan.trim() === '') {
+      this.showCustomAlert(
+        'warning',
+        'Validasi Gagal',
+        'Alasan pengajuan harus diisi.'
+      );
+      return;
+    }
+
+    const startDate = new Date(this.tempStartTime);
+    const endDate = new Date(this.tempEndTime);
+    const today = new Date();
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    if (startDate < today) {
+      this.showCustomAlert(
+        'warning',
+        'Validasi Gagal',
+        'Tanggal mulai cuti tidak boleh tanggal yang sudah lewat.'
+      );
+      return;
+    }
+    if (endDate < startDate) {
+      this.showCustomAlert(
+        'warning',
+        'Validasi Gagal',
+        'Tanggal selesai tidak boleh lebih awal dari tanggal mulai.'
+      );
+      return;
+    }
+
+    const getApiType = (type: string): string => {
+      const typeMap: { [key: string]: string } = {
+        Tahunan: 'annual',
+        Sakit: 'sick',
+        Izin: 'personal',
+        Lainnya: 'other',
+      };
+      return typeMap[type] || '';
+    };
+    const apiTypeValue = getApiType(this.jenisCuti);
+
+    this.isLoading = true;
+    const loading = await this.presentLoading('Mengirim pengajuan...');
+
+    try {
+      const payload: LeaveRequestPayload = {
+        type: apiTypeValue,
+        start_date: this.tempStartTime.split('T')[0],
+        end_date: this.tempEndTime.split('T')[0],
+        reason: this.alasan,
+        contact: this.kontakCuti,
+      };
+
+      const response = await firstValueFrom(
+        this.leaveRequestService.submitRequest(payload)
+      );
+      const newLeaveRequestId = response.data?.id;
+
+      await loading.dismiss();
+
+      if (newLeaveRequestId) {
+        await this.showCustomAlert(
+          'success',
+          'Sukses',
+          'Pengajuan cuti Anda telah berhasil dikirim.',
+          () => {
+            this.resetForm();
+            this.router.navigate(['/detail-cuti', newLeaveRequestId]);
+          }
+        );
+      } else {
+        await this.showCustomAlert(
+          'success',
+          'Sukses',
+          'Pengajuan berhasil, namun gagal menampilkan detail.',
+          () => {
+            this.resetForm();
+            this.router.navigate(['/riwayat']);
+          }
+        );
+      }
+    } catch (error: any) {
+      await loading.dismiss();
+      const errorMessage =
+        error.error?.message ||
+        error.message ||
+        'Terjadi kesalahan pada server.';
+      this.showCustomAlert('danger', 'Gagal Mengirim', errorMessage);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   resetForm() {
@@ -246,47 +201,49 @@ export class FormCutiPage implements OnInit {
     this.tempEndTime = '';
   }
 
-  async ajukanCuti() {
-    if (this.jenisCuti && this.startTime && this.endTime && this.alasan) {
-      const dataCuti = {
-        jenisCuti: this.jenisCuti,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        alasan: this.alasan,
-        kontakCuti: this.kontakCuti,
-      };
-      console.log('Data Cuti Diajukan:', dataCuti);
-
-      const alert = await this.alertController.create({
-        header: 'Sukses',
-        message: 'Cuti berhasil diajukan!',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      this.resetForm(); // Kosongkan form setelah sukses
-    } else {
-      const alert = await this.alertController.create({
-        header: 'Gagal',
-        message: 'Mohon lengkapi semua data cuti.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }
+  // --- Helper & Navigasi ---
+  async presentLoading(message: string) {
+    const loading = await this.loadingController.create({
+      message,
+      spinner: 'crescent',
+    });
+    await loading.present();
+    return loading;
   }
 
-  goTo(route: string) {
-    switch (route) {
-      case 'beranda':
-        this.router.navigate(['/dashboard']);
-        break;
-      case 'presensi':
-        this.router.navigate(['/presensi']);
-        break;
-      case 'akun':
-        this.router.navigate(['/akun']);
-        break;
-      default:
-        console.warn('Rute tidak dikenali:', route);
+  /**
+   * DITAMBAHKAN: Fungsi helper baru untuk menampilkan alert kustom
+   */
+  async showCustomAlert(
+    type: 'success' | 'danger' | 'warning' | 'primary',
+    header: string,
+    message: string,
+    okHandler?: () => void
+  ) {
+    const iconMap = {
+      success: 'checkmark-circle-outline',
+      danger: 'alert-circle-outline',
+      warning: 'warning-outline',
+      primary: 'information-circle-outline',
+    };
+
+    const modal = await this.modalCtrl.create({
+      component: CustomAlertComponent,
+      componentProps: {
+        icon: iconMap[type],
+        alertType: type,
+        headerText: header,
+        messageText: message,
+        confirmButton: { text: 'OK' },
+      },
+      cssClass: 'custom-alert-modal',
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.role === 'confirm' && okHandler) {
+      okHandler();
     }
   }
 
@@ -294,4 +251,3 @@ export class FormCutiPage implements OnInit {
     this.location.back();
   }
 }
-

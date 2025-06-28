@@ -1,6 +1,9 @@
+import { Location } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { LoadingController } from '@ionic/angular'; // 1. Import LoadingController
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -9,41 +12,97 @@ import { Location } from '@angular/common';
   standalone: false,
 })
 export class ProfilePage implements OnInit {
-  user = {
-    photo: 'https://i.pravatar.cc/150?img=12'
+  // Properti isLoading tidak lagi diperlukan untuk menampilkan/menyembunyikan konten
+  // employee: any = {}; // Lebih baik diinisialisasi dengan struktur data yang jelas
+  employee: any = {
+    photo: '',
+    name: '',
+    position: '',
+    employee_id: '',
+    npwp: '',
+    status: '',
+    email: '',
+    phone: '',
+    department: '',
+    address: '',
+    hire_date: '',
   };
 
-  nama: string = 'Andi Setiawan';
-  jabatan: string = 'Staff IT';
-  nik: string = '1234567890123456';
-  npwp: string = '12.345.678.9-012.345';
-  statusKepegawaian: string = 'Pegawai Tetap';
-  email: string = 'andi.setiawan@example.com';
-  noTelepon: string = '0812-3456-7890';
-  keteranganSP: string = 'Tidak ada SP aktif';
+  employeeId: string = '';
 
-  constructor(private router: Router, private location: Location) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private location: Location,
+    private loadingCtrl: LoadingController // 2. Inject LoadingController
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadEmployeeData();
+  }
 
-  goTo(route: string) {
-    switch (route) {
-      case 'perusahaan':
-        this.router.navigate(['/about']);
-        break;
-      case 'beranda':
-        this.router.navigate(['/dashboard']);
-        break;
-      case 'pengaturan':
-        this.router.navigate(['/pengaturan']);
-        break;
-      default:
-        console.warn('Rute tidak dikenali:', route);
+  // 3. Ubah fungsi menjadi async dan gunakan LoadingController
+  async loadEmployeeData() {
+    // Membuat dan menampilkan loading overlay
+    const loading = await this.loadingCtrl.create({
+      message: 'Memuat data profil...',
+      spinner: 'crescent',
+    });
+    await loading.present();
+
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (!storedUser) {
+        console.error('Data user tidak ditemukan di localStorage.');
+        // Jangan lupa dismiss loading walaupun terjadi error
+        await loading.dismiss();
+        return;
+      }
+
+      const user = JSON.parse(storedUser);
+      this.employeeId = user.employee_id;
+
+      if (!this.employeeId) {
+        console.error('Employee ID tidak ditemukan dalam data user.');
+        await loading.dismiss();
+        return;
+      }
+
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        console.error('Token tidak ditemukan, pengguna belum login.');
+        await loading.dismiss();
+        return;
+      }
+
+      const apiUrl = `${environment.apiUrl}/employees/${this.employeeId}`;
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+      this.http.get<any>(apiUrl, { headers }).subscribe({
+        next: (data) => {
+          this.employee = data.employee;
+          // Tutup loading setelah data berhasil didapat
+          loading.dismiss(); 
+        },
+        error: (error) => {
+          console.error('Error fetching employee data:', error);
+          // Tutup loading jika terjadi error
+          loading.dismiss();
+        }
+      });
+
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
+      // Pastikan loading ditutup jika ada error di luar proses subscribe
+      await loading.dismiss();
     }
+  }
+
+  getImageUrl(photo: string): string {
+    return photo ? `${environment.imageBaseUrl}/${photo}` : '';
   }
 
   goBack() {
     this.location.back();
   }
 }
-

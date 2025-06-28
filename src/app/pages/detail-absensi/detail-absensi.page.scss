@@ -1,0 +1,164 @@
+/* --- KONTEN UTAMA --- */
+ion-content {
+  --background: #003b6f;
+}
+
+.page-container {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* --- HEADER --- */
+.centered-toolbar {
+  --background: #ffffff;
+}
+.centered-title {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+/* --- KARTU DETAIL --- */
+.details-card {
+  --background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  overflow: hidden;
+}
+.details-card ion-card-header {
+  padding-top: 20px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+.details-card ion-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #083f73;
+}
+.details-card ion-card-subtitle {
+  margin-top: 8px;
+}
+.details-card ion-card-subtitle ion-chip {
+  font-weight: 500;
+}
+.details-card ion-card-content {
+  padding: 8px 16px 20px 16px;
+}
+
+/* --- Bagian Konten --- */
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  margin: 20px 0 12px 0;
+}
+.detail-item {
+  --background: #f8f9fa;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 60px;
+  --border-radius: 12px;
+  margin-bottom: 8px;
+}
+.detail-item:last-of-type {
+  margin-bottom: 0;
+}
+.icon-background {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.icon-background ion-icon {
+  font-size: 20px;
+  color: #0056b3;
+}
+.detail-item ion-label h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+.detail-item ion-label p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* --- GALERI FOTO --- */
+.photo-gallery {
+  display: flex;
+  gap: 16px;
+}
+.photo-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.attendance-photo {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.photo-container:hover .attendance-photo {
+  transform: scale(1.05);
+}
+.photo-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  // background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  padding: 20px 8px 8px 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.attendance-photo.placeholder {
+  object-fit: contain;
+  padding: 20px;
+  opacity: 0.5;
+  background-color: #e9ecef;
+}
+
+/* DITAMBAHKAN: Style untuk Peta */
+.map-container {
+  height: 250px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  background-color: #e9ecef;
+}
+
+/* --- TAMPILAN LOADING --- */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #003b6f;
+  color: white;
+}
+.loading-state p {
+  font-size: 16px;
+  margin-top: 16px;
+}

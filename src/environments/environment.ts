@@ -1,16 +1,12 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
   production: false,
+  // apiUrl: 'http://localhost:8000/api',  // Ganti dengan URL API Laravel Anda
+  // imageBaseUrl: 'http://localhost:8000/storage'
+  apiUrl: 'https://sipena.anopus.my.id/api',  // Ganti dengan URL API Laravel Anda
+  imageBaseUrl: 'https://sipena.anopus.my.id/storage'
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+// export const environment = {
+//   production: false,
+//   apiUrl: 'http://192.168.1.50:8000/api',
+//   imageBaseUrl: 'http://192.168.1.50:8000/storage'
+// };

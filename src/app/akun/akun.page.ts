@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
-import { AlertController, NavController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
+import { ModalController, NavController } from '@ionic/angular'; // DIUBAH: AlertController diganti ModalController
 import { filter } from 'rxjs/operators';
-
+import { CustomAlertComponent } from '../components/custom-alert/custom-alert.component'; // Import komponen alert kustom
 
 @Component({
   selector: 'app-akun',
@@ -13,25 +13,24 @@ import { filter } from 'rxjs/operators';
   standalone: false,
 })
 export class AkunPage implements OnInit {
-
   activeRoute: string = '';
 
   constructor(
-    private alertCtrl: AlertController,
+    private modalCtrl: ModalController, // DIUBAH: Menggunakan ModalController
     private navCtrl: NavController,
     private router: Router,
     private location: Location
   ) {
-     this.router.events
-    .pipe(filter((event) => event instanceof NavigationEnd))
-    .subscribe((event: NavigationEnd) => {
-      this.activeRoute = (event as NavigationEnd).urlAfterRedirects;
-    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.activeRoute = (event as NavigationEnd).urlAfterRedirects;
+      });
   }
 
   ngOnInit() {}
 
-  // === Akun ===
+  // === Fungsi-fungsi navigasi Anda tidak diubah ===
   goToProfile() {
     this.navCtrl.navigateForward('/profile');
   }
@@ -41,52 +40,47 @@ export class AkunPage implements OnInit {
   }
 
   changeLanguage() {
-    this.navCtrl.navigateForward('/language-settings');
+    // Anda perlu membuat halaman ini
+    // this.navCtrl.navigateForward('/language-settings');
+    console.log('Navigasi ke halaman ganti bahasa');
   }
 
-  // === Keamanan ===
-  enableTwoFactor() {
-    this.navCtrl.navigateForward('/two-factor-auth');
-  }
-
-  viewLoginHistory() {
-    this.navCtrl.navigateForward('/riwayat');
-  }
-
-  // === Bantuan ===
   openGuide() {
     this.navCtrl.navigateForward('/user-guide');
   }
 
   contactAdmin() {
-    window.open('mailto:admin@example.com');
+    window.open('mailto:support@sipenacorp.com');
   }
 
   aboutApp() {
     this.navCtrl.navigateForward('/about');
   }
 
-  // === Logout ===
+  // === DIUBAH: Fungsi Logout kini menggunakan modal kustom ===
   async logout() {
-    const alert = await this.alertCtrl.create({
-      header: 'Konfirmasi Keluar',
-      message: 'Apakah Anda yakin ingin keluar dari akun?',
-      buttons: [
-        { text: 'Batal', role: 'cancel' },
-        {
-          text: 'Keluar',
-          handler: async () => {
-            await Preferences.remove({ key: 'isLoggedIn' }); // Hapus status login
-            await Preferences.remove({ key: 'email' });
-            await Preferences.remove({ key: 'password' });
-
-            this.location.replaceState('/'); // Reset history
-            this.navCtrl.navigateRoot('/login', { replaceUrl: true }); // Kembali ke login
-          }
-        }
-      ]
+    const modal = await this.modalCtrl.create({
+      component: CustomAlertComponent,
+      componentProps: {
+        icon: 'log-out-outline',
+        alertType: 'danger',
+        headerText: 'Konfirmasi Keluar',
+        messageText: 'Apakah Anda yakin ingin keluar dari akun?',
+        cancelButton: { text: 'Batal' },
+        confirmButton: { text: 'Keluar' },
+      },
+      cssClass: 'custom-alert-modal',
     });
-    await alert.present();
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.role === 'confirm') {
+      // Logika logout Anda yang asli dipindahkan ke sini
+      localStorage.clear();
+      await Preferences.clear();
+      this.navCtrl.navigateRoot('/login', { replaceUrl: true });
+    }
   }
 
   goTo(route: string) {
@@ -109,4 +103,3 @@ export class AkunPage implements OnInit {
     this.location.back();
   }
 }
-

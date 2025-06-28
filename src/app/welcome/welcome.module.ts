@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { WelcomePageRoutingModule } from './welcome-routing.module';
 
 import { WelcomePage } from './welcome.page';
+import { CustomAlertComponentModule } from '../components/custom-alert/custom-alert.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    WelcomePageRoutingModule
+    WelcomePageRoutingModule,
+    CustomAlertComponentModule
   ],
   declarations: [WelcomePage]
 })

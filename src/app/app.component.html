@@ -1,3 +1,11 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
+  
+  <!-- Komponen ini akan muncul di atas semua halaman jika offline -->
+  <!-- (isOnline$ | async) akan mengambil nilai dari observable -->
+  <!-- *ngIf="!(...)" berarti "tampilkan jika TIDAK online" -->
+  <app-offline 
+    *ngIf="!(isOnline$ | async)"
+    (retryConnection)="checkNetwork()">
+  </app-offline>
 </ion-app>

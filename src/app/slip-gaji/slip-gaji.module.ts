@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SlipGajiPageRoutingModule } from './slip-gaji-routing.module';
 
 import { SlipGajiPage } from './slip-gaji.page';
+import { CustomAlertComponentModule } from '../components/custom-alert/custom-alert.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SlipGajiPageRoutingModule
+    SlipGajiPageRoutingModule,
+    CustomAlertComponentModule
   ],
   declarations: [SlipGajiPage]
 })

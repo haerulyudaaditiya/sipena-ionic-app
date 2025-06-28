@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "661265004553",
+    "project_id": "sipena-app",
+    "storage_bucket": "sipena-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661265004553:android:152c52d1b413d09c0020d8",
+        "android_client_info": {
+          "package_name": "com.sipena.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgyDcZNB_niauOj6stum2efisMU3uEb2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

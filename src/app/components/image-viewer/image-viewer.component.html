@@ -1,0 +1,10 @@
+<ion-content>
+  <div class="image-container">
+    <img [src]="imgSrc" alt="Image Viewer" />
+  </div>
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="closeModal()" color="light" size="small">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

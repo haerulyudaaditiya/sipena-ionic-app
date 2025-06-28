@@ -1,0 +1,125 @@
+/* --- KONTEN UTAMA --- */
+ion-content {
+  --background: #003b6f;
+}
+
+.page-container {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* --- HEADER --- */
+.centered-toolbar {
+  --background: #ffffff;
+}
+.centered-title {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+/* --- BAGIAN LOGO --- */
+.logo-section {
+  text-align: center;
+  padding: 24px 0 32px 0;
+  color: white;
+}
+.app-logo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 16px auto;
+  border-radius: 24px; /* Sudut lebih membulat */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.app-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+.app-tagline {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* --- KARTU TENTANG --- */
+.about-card {
+  --background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0 0 24px 0;
+}
+.about-card ion-card-header {
+  padding-bottom: 8px;
+}
+.about-card ion-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #083f73;
+}
+.about-card ion-card-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* --- DAFTAR FITUR --- */
+.features-list {
+  background: transparent;
+  padding: 0;
+}
+.features-list ion-list-header {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  padding-left: 4px;
+  margin-bottom: 8px;
+}
+.features-list ion-item {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.features-list .icon-background {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.features-list .icon-background ion-icon {
+  color: #0056b3;
+  font-size: 20px;
+}
+.features-list ion-label {
+  font-weight: 500;
+  color: #333;
+}
+
+/* --- TOMBOL HUBUNGI KAMI --- */
+/* DIUBAH: Tombol dibuat solid agar lebih menonjol */
+.contact-button {
+  margin-top: 32px;
+  height: 48px;
+  text-transform: none;
+  font-weight: bold;
+  
+  /* --- UBAH ATAU TAMBAHKAN BARIS INI --- */
+  --background: #083f73; /* DIUBAH: Warna primer yang konsisten */
+  --background-activated: #002f5e;
+  --border-radius: 12px;
+  --box-shadow: none;
+}

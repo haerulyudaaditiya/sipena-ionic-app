@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { AlertController, NavController, PopoverController } from '@ionic/angular';
-import { Preferences } from '@capacitor/preferences'; 
+import { Component, OnInit } from '@angular/core';
+import { Preferences } from '@capacitor/preferences';
+import {
+  ModalController,
+  NavController,
+  PopoverController,
+} from '@ionic/angular'; // DIUBAH: AlertController diganti ModalController
+import { CustomAlertComponent } from '../../components/custom-alert/custom-alert.component'; // Import komponen alert kustom
 
 @Component({
   selector: 'app-profile-popover',
@@ -10,25 +15,26 @@ import { Preferences } from '@capacitor/preferences';
   standalone: false,
 })
 export class ProfilePopoverComponent implements OnInit {
-
   constructor(
-    private alertCtrl: AlertController,
+    private modalCtrl: ModalController, // DIUBAH: Menggunakan ModalController
     private navCtrl: NavController,
     private location: Location,
     private popoverCtrl: PopoverController
   ) {}
 
   ngOnInit(): void {
-    // logika inisialisasi bisa ditambahkan di sini jika diperlukan
+    // logika inisialisasi Anda tetap di sini
   }
 
+  // Fungsi goToProfile() tidak diubah
   goToProfile() {
     this.popoverCtrl.dismiss();
     setTimeout(() => {
       this.navCtrl.navigateForward('/profile');
-    }, 100); // delay 100ms agar focus berpindah dulu
+    }, 100);
   }
 
+  // Fungsi changepassword() tidak diubah
   changepassword() {
     this.popoverCtrl.dismiss();
     setTimeout(() => {
@@ -36,29 +42,43 @@ export class ProfilePopoverComponent implements OnInit {
     }, 100);
   }
 
+  /**
+   * DIUBAH: Hanya bagian ini yang diubah untuk menggunakan modal kustom
+   */
   async logout() {
-    const alert = await this.alertCtrl.create({
-      header: 'Konfirmasi Keluar',
-      message: 'Apakah Anda yakin ingin keluar dari akun?',
-      buttons: [
-        { text: 'Batal', role: 'cancel' },
-        {
-          text: 'Keluar',
-          handler: async () => {
-            await Preferences.remove({ key: 'isLoggedIn' });
-            await Preferences.remove({ key: 'email' });
-            await Preferences.remove({ key: 'password' });
+    // Tutup popover terlebih dahulu
+    await this.popoverCtrl.dismiss();
 
-            this.popoverCtrl.dismiss();
-            this.location.replaceState('/');
-            setTimeout(() => {
-              this.navCtrl.navigateRoot('/login', { replaceUrl: true });
-            }, 100);
-          }
-        }
-      ]
+    // Membuat dan menampilkan modal kustom
+    const modal = await this.modalCtrl.create({
+      component: CustomAlertComponent,
+      componentProps: {
+        icon: 'log-out-outline',
+        alertType: 'danger',
+        headerText: 'Konfirmasi Keluar',
+        messageText: 'Apakah Anda yakin ingin keluar dari akun?',
+        cancelButton: { text: 'Batal' },
+        confirmButton: { text: 'Keluar' },
+      },
+      cssClass: 'custom-alert-modal',
     });
 
-    await alert.present();
+    await modal.present();
+
+    // Menunggu hasil dari modal
+    const { data } = await modal.onDidDismiss();
+
+    // Menjalankan logika logout asli Anda jika pengguna menekan "Keluar"
+    if (data && data.role === 'confirm') {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('user');
+
+      await Preferences.remove({ key: 'isLoggedIn' });
+      await Preferences.remove({ key: 'email' });
+      await Preferences.remove({ key: 'password' });
+
+      this.navCtrl.navigateRoot('/login', { replaceUrl: true });
+    }
   }
 }

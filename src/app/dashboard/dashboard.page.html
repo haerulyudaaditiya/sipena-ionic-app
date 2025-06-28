@@ -1,48 +1,101 @@
 <ion-header *ngIf="showHeader" [translucent]="true">
   <div class="header-curve">
-    <img src="assets/logo2.png" alt="SIPENA Logo" class="sipena-logo" (click)="goTo('beranda')" />
+    <img
+      src="assets/logo2.png"
+      alt="SIPENA Logo"
+      class="sipena-logo"
+      (click)="goTo('beranda')"
+    />
 
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <ion-icon name="notifications-outline" class="header-icon" (click)="goTo('notification')"></ion-icon>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <div class="header-actions">
+        <div class="notification-wrapper" (click)="goTo('notifikasi')">
+          <ion-icon name="notifications-outline" class="header-icon"></ion-icon>
+
+          <ion-badge
+            *ngIf="unreadCount > 0"
+            color="danger"
+            class="notification-badge"
+            >{{ unreadCount }}</ion-badge
+          >
+        </div>
+      </div>
       <!-- Profil -->
       <div class="avatar" (click)="goTo('profile', $event)">
-        <img [src]="user.photo" />
+        <img [src]="getImageUrl(user.photo)" alt="User Photo" />
       </div>
     </div>
   </div>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding" scrollEvents="true" (ionScroll)="onScroll($event)">
-  <!-- Search Bar -->
-  <ion-searchbar placeholder="Search" mode="ios" class="custom-searchbar"></ion-searchbar>
-
+<ion-content [fullscreen]="true" class="ion-padding">
   <!-- Clock -->
   <div class="form-wrapper">
-    <div class="clock-card">
+    <ion-card class="clock-card">
       <div class="clock-time">{{ currentTime }}</div>
       <div class="clock-date">{{ currentDate }}</div>
-    </div>
+    </ion-card>
+
+    <ion-card class="summary-card">
+      <ion-item button lines="full" (click)="goTo('presensi')">
+        <div class="icon-background" slot="start">
+          <ion-icon
+            [name]="attendanceStatus === 'sudah_check_in' ? 'checkmark-circle-outline' : 'finger-print-outline'"
+            [color]="attendanceStatus === 'sudah_check_in' ? 'success' : 'primary'"
+          ></ion-icon>
+        </div>
+        <ion-label>
+          <div *ngIf="attendanceStatus === 'belum_check_in'; else sudahCheckIn">
+            <h2>Waktunya Presensi</h2>
+            <p>Anda belum check-in hari ini.</p>
+          </div>
+          <ng-template #sudahCheckIn>
+            <h2>Anda Sudah Check-in</h2>
+            <p>Masuk pada pukul {{ checkInTime }}</p>
+          </ng-template>
+        </ion-label>
+      </ion-item>
+
+      <ion-item button lines="none" (click)="goTo('cuti')">
+        <div class="icon-background" slot="start">
+          <ion-icon name="calendar-clear-outline" color="primary"></ion-icon>
+        </div>
+        <ion-label>
+          <h2>Sisa Cuti Tahunan</h2>
+          <p>Gunakan jatah cuti Anda.</p>
+        </ion-label>
+        <ion-note slot="end" color="primary">{{ sisaCuti }} Hari</ion-note>
+      </ion-item>
+    </ion-card>
 
     <!-- Menu Card -->
     <ion-card class="menu-card">
       <ion-grid>
         <ion-row>
           <ion-col size="6" class="icon-col" (click)="goTo('presensi')">
-            <div class="circle-icon"><ion-icon name="alarm-outline"></ion-icon></div>
+            <div class="circle-icon">
+              <ion-icon name="alarm-outline"></ion-icon>
+            </div>
             <p>Presensi</p>
           </ion-col>
           <ion-col size="6" class="icon-col" (click)="goTo('cuti')">
-            <div class="circle-icon"><ion-icon name="document-text-outline"></ion-icon></div>
+            <div class="circle-icon">
+              <ion-icon name="document-text-outline"></ion-icon>
+            </div>
             <p>Ajukan Cuti</p>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col size="6" class="icon-col" (click)="goTo('gaji')">
-            <div class="circle-icon"><ion-icon name="wallet-outline"></ion-icon></div>
+            <div class="circle-icon">
+              <ion-icon name="wallet-outline"></ion-icon>
+            </div>
             <p>Slip Gaji & Tunjangan</p>
           </ion-col>
           <ion-col size="6" class="icon-col" (click)="goTo('riwayat')">
-            <div class="circle-icon"><ion-icon name="bar-chart-outline"></ion-icon></div>
+            <div class="circle-icon">
+              <ion-icon name="bar-chart-outline"></ion-icon>
+            </div>
             <p>Riwayat Absensi & Pengajuan</p>
           </ion-col>
         </ion-row>
@@ -50,11 +103,31 @@
     </ion-card>
 
     <ion-card class="info-card">
-      <ion-item lines="none">
-        <ion-icon name="megaphone-outline" slot="start" color="primary"></ion-icon>
+      <!-- Tampilan ini akan muncul jika ADA pengumuman dari server -->
+      <ion-item lines="none" *ngIf="latestAnnouncement">
+        <ion-icon
+          name="megaphone-outline"
+          slot="start"
+          color="primary"
+        ></ion-icon>
         <ion-label>
-          <h2>Pengumuman</h2>
-          <p>Hari Jumat, 31 Mei 2025 libur nasional – Hari Raya Waisak</p>
+          <h2>{{ latestAnnouncement.title }}</h2>
+          <!-- Menggunakan [innerHTML] penting agar format teks dari admin (seperti tebal/miring) bisa ditampilkan dengan benar -->
+          <p class="ion-text-wrap" [innerHTML]="latestAnnouncement.content"></p>
+        </ion-label>
+      </ion-item>
+
+      <!-- Tampilan ini akan muncul jika TIDAK ADA pengumuman dari server -->
+      <ion-item lines="none" *ngIf="!latestAnnouncement">
+        <div class="icon-background" slot="start">
+          <ion-icon name="information-circle-outline"></ion-icon>
+        </div>
+
+        <ion-label>
+          <h2>Tidak Ada Pengumuman</h2>
+          <p class="ion-text-wrap">
+            Saat ini tidak ada informasi atau pengumuman baru untuk ditampilkan.
+          </p>
         </ion-label>
       </ion-item>
     </ion-card>
@@ -87,4 +160,3 @@
     </div>
   </ion-buttons>
 </ion-toolbar>
-  

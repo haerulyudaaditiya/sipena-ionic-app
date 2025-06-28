@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Detail Slip Gaji</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Indikator Loading -->
+  <div *ngIf="isLoading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Memuat detail gaji...</p>
+  </div>
+
+  <!-- Konten Utama -->
+  <div *ngIf="!isLoading && salaryDetail" class="page-container">
+    <ion-card class="details-card">
+      <ion-card-header>
+        <ion-card-title>Periode {{ salaryDetail.salary_date | date:'MMMM yyyy' }}</ion-card-title>
+        <ion-card-subtitle>Rincian Gaji & Tunjangan</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Bagian Penerimaan -->
+        <div class="section-title">Penerimaan</div>
+        <ion-item lines="none" class="detail-item">
+          <ion-label>Gaji Pokok</ion-label>
+          <ion-note slot="end">Rp {{ salaryDetail.basic_salary | number:'1.0-0':'id' }}</ion-note>
+        </ion-item>
+        <ion-item lines="none" class="detail-item">
+          <ion-label>Tunjangan</ion-label>
+          <ion-note slot="end">Rp {{ salaryDetail.allowances | number:'1.0-0':'id' }}</ion-note>
+        </ion-item>
+        <ion-item lines="none" class="detail-item">
+          <ion-label>Bonus</ion-label>
+          <ion-note slot="end">Rp {{ salaryDetail.bonus | number:'1.0-0':'id' }}</ion-note>
+        </ion-item>
+        <ion-item lines="full" class="total-item">
+          <ion-label><strong>Total Penerimaan</strong></ion-label>
+          <ion-note slot="end" color="success"><strong>Rp {{ totalPenerimaan | number:'1.0-0':'id' }}</strong></ion-note>
+        </ion-item>
+
+        <!-- Bagian Potongan -->
+        <div class="section-title">Potongan</div>
+        <ion-item lines="none" class="detail-item">
+          <ion-label>Potongan Lainnya</ion-label>
+          <ion-note slot="end" color="danger">- Rp {{ salaryDetail.deductions | number:'1.0-0':'id' }}</ion-note>
+        </ion-item>
+        <ion-item lines="full" class="total-item">
+          <ion-label><strong>Total Potongan</strong></ion-label>
+          <ion-note slot="end" color="danger"><strong>- Rp {{ salaryDetail.deductions | number:'1.0-0':'id' }}</strong></ion-note>
+        </ion-item>
+
+        <!-- Gaji Bersih -->
+        <ion-item lines="none" class="net-salary-item">
+          <ion-label><h2>Gaji Bersih Diterima</h2></ion-label>
+          <ion-note slot="end"><h2>Rp {{ salaryDetail.net_salary | number:'1.0-0':'id' }}</h2></ion-note>
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tombol Aksi -->
+    <ion-button expand="block" class="download-button" (click)="download()">
+      <ion-icon name="download-outline" slot="start"></ion-icon>
+      Download Slip Gaji (PDF)
+    </ion-button>
+  </div>
+</ion-content>

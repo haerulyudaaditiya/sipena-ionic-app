@@ -1,0 +1,135 @@
+/* --- KONTEN UTAMA --- */
+ion-content {
+  --background: #003b6f;
+}
+
+.page-container {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* --- HEADER --- */
+.centered-toolbar {
+  --background: #ffffff;
+}
+.centered-title {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+/* --- KARTU DETAIL --- */
+.details-card {
+  --background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  overflow: hidden;
+}
+.details-card ion-card-header {
+  padding-top: 20px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+.details-card ion-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #083f73;
+}
+.details-card ion-card-subtitle {
+  margin-top: 8px;
+}
+.details-card ion-card-subtitle ion-chip {
+    font-weight: 500;
+}
+.details-card ion-card-content {
+  padding: 8px 16px 20px 16px;
+}
+
+/* --- Bagian-bagian Konten --- */
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  margin: 20px 0 12px 0;
+}
+.detail-item {
+  --background: #f8f9fa;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 60px;
+  --border-radius: 12px;
+  margin-bottom: 8px;
+}
+.detail-item:last-of-type {
+  margin-bottom: 0;
+}
+.icon-background {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.icon-background ion-icon {
+  font-size: 20px;
+  color: #0056b3;
+}
+.detail-item ion-label h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+.detail-item ion-label p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* --- KOTAK ALASAN --- */
+.reason-container {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #f0f2f5;
+}
+.reason-container p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* --- TAMPILAN LOADING --- */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #003b6f;
+  color: white;
+}
+.loading-state p {
+  font-size: 16px;
+  margin-top: 16px;
+}
+
+.section-title.rejection {
+  color: #d32f2f; /* Warna merah */
+}
+
+.reason-container.rejection-reason {
+  background: #ffebee; /* Latar merah lembut */
+  border-color: #ffcdd2;
+}

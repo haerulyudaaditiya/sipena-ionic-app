@@ -1,153 +1,133 @@
+/* --- KONTEN UTAMA --- */
 ion-content {
   --background: #003b6f;
-  padding: 16px;
-  padding-top: env(safe-area-inset-top); 
-  padding-bottom: 80px;
 }
-  
+
+/* --- HEADER & TOOLBAR --- */
 ion-header {
+  box-shadow: none;
+}
+.centered-toolbar {
   --background: #ffffff;
   position: relative;
-  z-index: 2;
-  padding-top: env(safe-area-inset-top);
 }
-
-.centered-toolbar {
-  position: relative;
-}
-
 .centered-title {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50px;
+  right: 50px;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 18px;
   top: 50%;
   transform: translateY(-50%);
-}
-
-.slip-container {
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 14px;
-  color: #000;
-  background: #fff;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.logo {
-  width: 100px;
-  display: block;
-  margin: 0 auto 10px;
-}
-
-.title {
-  text-align: center;
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 4px;
-}
-
-.alamat {
-  text-align: center;
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
-.slip-title {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-decoration: underline;
-}
-
-.gaji-table {
-  margin: 0 auto;
-  width: 80%;
-  margin-bottom: 20px;
-}
-
-.gaji-table td {
-  padding: 4px 8px;
-}
-
-.section {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
-
-.left, .right {
-  width: 48%;
-  border: 1px solid #000;
-  padding: 10px;
-}
-
-.left p, .right p {
-  margin: 4px 0;
-}
-
-.gaji-bersih {
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  margin: 20px 0;
-}
-
-.gaji-bersih span {
-  font-size: 18px;
   color: #000;
 }
-
-.signature {
+.search-toolbar {
+  --background: #003b6f;
+}
+.search-filter-container {
   display: flex;
-  justify-content: space-between;
-  margin-top: 40px;
-  padding: 0 30px;
-}
-
-.signature div {
-  text-align: center;
-  width: 40%;
-}
-
-.footer-toolbar {
-  position: fixed;
-  bottom: 0;
-  width: 100vw;
-  --background: #ffffff;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  padding: 6px 0;
-}
-
-.footer-menu {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.footer-icon {
-  --padding-start: 0;
-  --padding-end: 0;
-  --background-hover: rgba(0, 59, 111, 0.1); // saat tap
-  --border-radius: 8px;
-  --box-shadow: none;
-  --color: #083f73;
-  font-size: 20px;
-
-  ion-icon {
-    font-size: 24px;
-    color: #083f73;
-  }
-
-  width: 60px;
-  height: 44px;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 8px;
+  padding: 16px 16px 8px 16px;
+}
+.custom-searchbar {
+  --background: #27547f;
+  --color: white;
+  --placeholder-color: #ffffffa8;
+  --icon-color: white;
+  --clear-button-color: white;
+  --box-shadow: none;
+  --border-radius: 12px;
+  padding: 0;
+  font-size: 14px;
+  flex-grow: 1;
+}
+.filter-button {
+  --color: #ffffff;
+  --background: #27547f;
+  --border-radius: 12px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  height: 48px;
+}
+
+/* --- DAFTAR RIWAYAT --- */
+.history-list {
+  background: transparent;
+  padding: 8px 16px 100px 16px;
+}
+.history-card {
+  --background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0 0 12px 0;
+  transition: transform 0.2s ease;
+}
+.history-card:active {
+  transform: scale(0.98);
+}
+.history-card ion-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.icon-background {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.icon-background ion-icon {
+  font-size: 22px;
+  color: #0056b3;
+}
+.history-card ion-label h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #083f73;
+  margin-bottom: 6px;
+}
+.history-card ion-label p {
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+/* --- TAMPILAN KOSONG & LOADING --- */
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+  color: #ffffff;
+  opacity: 0.8;
+}
+.loading-state p, .empty-state h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0 0 0;
+}
+.empty-state p {
+    font-size: 14px;
+    max-width: 250px;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+.empty-state ion-icon {
+  font-size: 80px;
+}
+
+/* --- POPOVER FILTER --- */
+ion-popover ion-list-header {
+  font-weight: 600;
 }

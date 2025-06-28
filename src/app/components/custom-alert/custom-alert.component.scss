@@ -1,0 +1,72 @@
+.alert-card {
+  --background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+}
+
+.icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.icon-wrapper ion-icon {
+  font-size: 32px;
+}
+
+/* Warna latar belakang ikon berdasarkan tipe alert */
+.icon-bg-success { background-color: #e8f5e9; } /* Hijau lembut */
+.icon-bg-danger  { background-color: #ffebee; } /* Merah lembut */
+.icon-bg-warning { background-color: #fff8e1; } /* Kuning lembut */
+.icon-bg-primary { background-color: #f0f7ff; } /* Biru lembut */
+
+
+ion-card-header {
+  padding: 0;
+}
+
+ion-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #083f73;
+}
+
+ion-card-content {
+  padding: 8px 0 20px 0;
+}
+
+ion-card-content p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #5a6e80;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.button-wrapper ion-button {
+  flex: 1;
+  --border-radius: 12px;
+  height: 44px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.confirm-button {
+  --background: #003b6f;/* Warna primer default */
+}
+
+.cancel-button {
+  --border-color: #d1d5db;
+  --color: #374151;
+}

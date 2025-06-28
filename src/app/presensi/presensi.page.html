@@ -2,74 +2,80 @@
   <ion-toolbar class="centered-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="goBack()">
-        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        <ion-icon name="chevron-back-outline" slot="icon-only" class="back-icon"></ion-icon>
       </ion-button>
     </ion-buttons>
     <div slot="primary" class="centered-title">Presensi</div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content scroll-events="true">
-  <div class="form-wrapper">
-    <ion-card class="menu-card">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6" class="icon-col" (click)="ambilPresensi('masuk')">
-            <div class="circle-icon"><ion-icon name="briefcase-outline"></ion-icon></div>
-            <p>Presensi Masuk</p>
-          </ion-col>
-          <ion-col size="6" class="icon-col" (click)="ambilPresensi('keluar')">
-            <div class="circle-icon"><ion-icon name="walk-outline"></ion-icon></div>
-            <p>Presensi Keluar</p>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+<ion-content class="content-wrapper">
+  <div class="page-container">
+    <ion-card class="main-card">
+      <!-- Tampilan Awal: Pilihan Menu Presensi -->
+      <div *ngIf="!presensiData; else presensiView">
+        <div class="card-header-text">
+          <h2>Pilih Jenis Presensi</h2>
+          <p>Silakan pilih presensi masuk atau keluar.</p>
+        </div>
+        <ion-grid class="menu-grid">
+          <ion-row>
+            <ion-col size="6" class="icon-col" (click)="ambilPresensi('masuk')">
+              <div class="circle-icon">
+                <ion-icon name="briefcase-outline"></ion-icon>
+              </div>
+              <p>Presensi Masuk</p>
+            </ion-col>
+            <ion-col size="6" class="icon-col" (click)="ambilPresensi('keluar')">
+              <div class="circle-icon">
+                <ion-icon name="walk-outline"></ion-icon>
+              </div>
+              <p>Presensi Keluar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- Tampilan Setelah Ambil Foto: Detail Presensi -->
+      <ng-template #presensiView>
+        <div class="presensi-details-wrapper">
+          <!-- DIUBAH: Ditambahkan ! untuk non-null assertion -->
+          <img [src]="presensiData!.foto" class="presensi-image" />
+          <div class="details-list">
+            <div class="detail-item">
+              <label>Jenis Presensi</label>
+              <span>{{ presensiData!.jenis === 'masuk' ? 'Masuk' : 'Keluar' }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Waktu</label>
+              <span>{{ presensiData!.waktu }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Lokasi</label>
+              <span>{{ presensiData!.lokasi }}</span>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <ion-button
+              expand="block"
+              (click)="onKirimPresensi()"
+              class="submit-button"
+              [disabled]="!isDataReady || isLoading"
+            >
+              Kirim Presensi
+            </ion-button>
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="resetPresensiData()"
+              class="cancel-button"
+            >
+              Batalkan
+            </ion-button>
+          </div>
+        </div>
+      </ng-template>
     </ion-card>
   </div>
-
-  <ion-card *ngIf="presensiData">
-    <img [src]="presensiData.foto" />
-    <ion-card-content>
-      <p><strong>Jenis:</strong> {{ presensiData.jenis }}</p>
-      <p><strong>Waktu:</strong> {{ presensiData.waktu }}</p>
-      <p><strong>Lokasi:</strong> {{ presensiData.lokasi }}</p>
-
-      <ion-button expand="block" color="primary" (click)="kirimPresensi()" class="submit-button">
-        Kirim Presensi
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
 </ion-content>
-
-<!-- Floating Footer -->
-<ion-toolbar class="footer-toolbar">
-  <ion-buttons class="footer-menu" expand="block">
-    <div
-      class="footer-icon"
-      [ngClass]="{ active: activeRoute.includes('/dashboard') }"
-      (click)="goTo('beranda')"
-    >
-      <ion-icon name="home-outline"></ion-icon>
-    </div>
-    <div
-      class="footer-icon"
-      [ngClass]="{ active: activeRoute.includes('/presensi') }"
-      (click)="goTo('presensi')"
-    >
-      <ion-icon name="finger-print-outline"></ion-icon>
-    </div>
-    <div
-      class="footer-icon"
-      [ngClass]="{ active: activeRoute.includes('/akun') }"
-      (click)="goTo('akun')"
-    >
-      <ion-icon name="person-outline"></ion-icon>
-    </div>
-  </ion-buttons>
-</ion-toolbar>
-
-<script type="module">
-  import { defineCustomElements } from 'https://cdn.jsdelivr.net/npm/@ionic/pwa-elements@3/loader/index.es2017.js';
-  defineCustomElements(window);
-</script>
-

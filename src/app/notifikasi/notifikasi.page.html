@@ -2,27 +2,51 @@
   <ion-toolbar class="centered-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="goBack()">
-        <ion-icon name="chevron-back-outline" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <div slot="primary" class="centered-title">Notifikasi</div>
+    <div slot="primary" class="centered-title">
+      Notifikasi
+      <!-- DITAMBAHKAN: Badge untuk jumlah notifikasi belum dibaca -->
+      <ion-badge *ngIf="unreadCount > 0" color="danger" class="title-badge">
+        {{ unreadCount }}
+      </ion-badge>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="notification-content" [fullscreen]="true">
-  <div *ngIf="notifikasiList.length > 0; else tidakAdaNotif">
-    <ion-card *ngFor="let notif of notifikasiList" class="notif-card">
-      <ion-card-header>
-        <ion-card-title>{{ notif.judul }}</ion-card-title>
-        <ion-card-subtitle>{{ formatTanggal(notif.tanggal) }}</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        {{ notif.isi }}
-      </ion-card-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="notifikasiList && notifikasiList.length > 0; else tidakAdaNotif">
+    <ion-card
+      *ngFor="let notif of notifikasiList"
+      class="notif-card"
+      [class.card-read]="notif.isRead"
+      (click)="handleNotificationTap(notif)"
+      button
+    >
+      <ion-item lines="none">
+        <div class="unread-dot" *ngIf="!notif.isRead"></div>
+        <div class="icon-background" slot="start">
+          <ion-icon [name]="getIconForNotif(notif.type)"></ion-icon>
+        </div>
+        <ion-label>
+          <h3>{{ notif.judul }}</h3>
+          <p class="notif-content">{{ notif.isi }}</p>
+          <p class="notif-date">{{ formatTanggal(notif.tanggal) }}</p>
+        </ion-label>
+      </ion-item>
     </ion-card>
   </div>
+
   <ng-template #tidakAdaNotif>
-    <div class="no-notif">Tidak ada notifikasi.</div>
+    <div class="empty-state">
+      <ion-icon name="notifications-off-outline"></ion-icon>
+      <h2>Tidak Ada Notifikasi</h2>
+      <p>Semua notifikasi Anda akan muncul di sini.</p>
+    </div>
   </ng-template>
 </ion-content>
-

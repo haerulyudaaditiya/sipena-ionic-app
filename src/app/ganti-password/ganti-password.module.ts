@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GantiPasswordPage } from './ganti-password.page';
 import { RouterModule } from '@angular/router';
+import { CustomAlertComponentModule } from '../components/custom-alert/custom-alert.module';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     IonicModule,
     ReactiveFormsModule, // ✅ Tambahkan ini
-    RouterModule.forChild([{ path: '', component: GantiPasswordPage }])
+    RouterModule.forChild([{ path: '', component: GantiPasswordPage }]),
+    CustomAlertComponentModule
   ],
   declarations: [GantiPasswordPage]
 })

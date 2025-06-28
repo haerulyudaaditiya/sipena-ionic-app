@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="centered-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div slot="primary" class="centered-title">Detail Pengajuan Cuti</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Indikator Loading -->
+  <div *ngIf="isLoading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Memuat detail pengajuan...</p>
+  </div>
+
+  <!-- Konten Utama -->
+  <div *ngIf="!isLoading && leaveDetail" class="page-container">
+    <ion-card class="details-card">
+      <ion-card-header>
+        <ion-card-title>{{ leaveDetail.type_in_indonesian }}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-chip [outline]="true" [color]="leaveDetail.statusColor">
+            <ion-icon [name]="leaveDetail.statusIcon"></ion-icon>
+            <ion-label>{{ leaveDetail.status }}</ion-label>
+          </ion-chip>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Rincian Cuti -->
+        <div class="section-title">Rincian Pengajuan</div>
+        <ion-item lines="full" class="detail-item">
+          <div class="icon-background" slot="start">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Tanggal Cuti</h3>
+            <p>
+              {{ leaveDetail.start_date | date:'d MMM y' }} - {{
+              leaveDetail.end_date | date:'d MMM y' }}
+            </p>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="full" class="detail-item">
+          <div class="icon-background" slot="start">
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Total Durasi</h3>
+            <p>{{ leaveDuration }} Hari</p>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none" class="detail-item">
+          <div class="icon-background" slot="start">
+            <ion-icon name="call-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Kontak Selama Cuti</h3>
+            <p>{{ leaveDetail.contact || '-' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Alasan Pengajuan -->
+        <div class="section-title">Alasan Pengajuan</div>
+        <div class="reason-container">
+          <p>{{ leaveDetail.reason }}</p>
+        </div>
+
+        <!-- DITAMBAHKAN: Bagian Alasan Penolakan -->
+        <!-- Ini hanya akan tampil jika statusnya Ditolak dan ada alasannya -->
+        <div
+          *ngIf="leaveDetail.status === 'Ditolak' && leaveDetail.rejection_reason"
+        >
+          <div class="section-title rejection">Alasan Penolakan</div>
+          <div class="reason-container rejection-reason">
+            <p>{{ leaveDetail.rejection_reason }}</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

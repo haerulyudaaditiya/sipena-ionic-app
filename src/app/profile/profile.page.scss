@@ -1,105 +1,131 @@
+/* --- KONTEN UTAMA --- */
 ion-content {
-  --background: linear-gradient(to bottom, #004b8f, #002f5e);
-  color: white;
-  padding: 0;
+  --background: #003b6f;
 }
 
+/* --- HEADER --- */
 .centered-toolbar {
-  position: relative;
+  --background: #ffffff;
 }
 
 .centered-title {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50px;
+  right: 50px;
   text-align: center;
   font-weight: 600;
   font-size: 18px;
   top: 50%;
   transform: translateY(-50%);
+  color: #000;
 }
 
+/* --- CONTAINER & CARD UTAMA --- */
 .profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 24px;
-}
-
-.card {
-  width: 100%;
-  max-width: 420px;
-  background: #ffffff10;
-  border-radius: 20px;
   padding: 24px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
+.profile-card {
+  width: 100%;
+  margin: 0;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- BAGIAN AVATAR --- */
 .avatar-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 24px;
-
-  .avatar {
-    width: 120px;
-    height: 120px;
-    border: 3px solid #fff;
-    margin-bottom: 12px;
-  }
-
-  .name {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0;
-    color: #fff;
-  }
-
-  .position {
-    font-size: 16px;
-    font-weight: 500;
-    color: #cfd8dc;
-    margin: 4px 0 0;
-  }
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e9ecef;
 }
 
+.avatar-wrapper .avatar {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  border: 4px solid #083f73; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-wrapper .name {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #083f73;
+}
+
+.avatar-wrapper .position {
+  font-size: 16px;
+  font-weight: 500;
+  color: #5a6e80;
+  margin: 4px 0 0;
+}
+
+/* --- DAFTAR INFO --- */
 .info-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* DIUBAH: Menggunakan gap untuk memberi jarak antar item */
+  gap: 8px;
 }
 
 .info-item {
   display: flex;
-  align-items: flex-start;
-  background-color: #ffffff15;
+  align-items: center;
+  /* DIUBAH: Padding yang lebih seragam */
   padding: 12px;
-  border-radius: 14px;
+  /* DIHAPUS: Garis pemisah bawah tidak lagi digunakan */
+  /* DITAMBAHKAN: Sudut rounded untuk setiap item */
+  border-radius: 12px; 
+  transition: background-color 0.2s ease;
+}
 
-  ion-icon {
-    font-size: 22px;
-    color: #ffffffcc;
-    margin-right: 12px;
-    margin-top: 4px;
-  }
+/* Efek hover dengan latar belakang gelap pada item yang sudah rounded */
+.info-item:hover {
+  background-color: #f1f3f5;
+}
 
-  .info-content {
-    display: flex;
-    flex-direction: column;
+/* DIHAPUS: Aturan untuk :last-child tidak lagi diperlukan */
 
-    label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #ffffffa8;
-      margin-bottom: 4px;
-    }
+.icon-background {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
 
-    span {
-      font-size: 15px;
-      font-weight: 500;
-      color: white;
-    }
-  }
+.info-item .icon-background ion-icon {
+  font-size: 22px;
+  color: #0056b3;
+}
+
+.info-item .info-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.info-item .info-content label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #888888;
+  margin-bottom: 4px;
+}
+
+.info-item .info-content span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
 }

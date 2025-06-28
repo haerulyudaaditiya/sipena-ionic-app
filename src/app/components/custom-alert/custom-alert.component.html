@@ -1,0 +1,34 @@
+<ion-card class="alert-card">
+  <div class="icon-wrapper" [ngClass]="'icon-bg-' + alertType">
+    <ion-icon [name]="icon" [color]="alertType"></ion-icon>
+  </div>
+
+  <ion-card-header>
+    <ion-card-title>{{ headerText }}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>{{ messageText }}</p>
+  </ion-card-content>
+
+  <div class="button-wrapper">
+    <!-- Tombol Cancel (Opsional) -->
+    <ion-button
+      *ngIf="cancelButton"
+      fill="outline"
+      class="cancel-button"
+      (click)="dismiss('cancel')">
+      {{ cancelButton.text }}
+    </ion-button>
+
+    <!-- Tombol Konfirmasi -->
+    <ion-button
+      *ngIf="confirmButton"
+      fill="solid"
+      class="confirm-button"
+      [color]="alertType"
+      (click)="dismiss('confirm')">
+      {{ confirmButton.text }}
+    </ion-button>
+  </div>
+</ion-card>

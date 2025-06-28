@@ -1,32 +1,65 @@
-<ion-content class="ion-padding">
-  <div class="welcome-wrapper">
-    <img src="assets/logo.png" alt="logo" class="logo" />
+<ion-content [fullscreen]="true">
+  <!-- DIUBAH: Struktur dirombak menjadi dua bagian utama -->
+  <div class="top-section">
+    <img src="assets/logo_only.png" alt="SIPENA Logo" class="logo" />
+    <h1>Selamat Datang di SIPENA</h1>
+    <p>Aplikasi presensi dan manajemen karyawan terintegrasi untuk perusahaan Anda.</p>
+  </div>
 
-    <h2>Selamat Datang di SIPENA</h2>
-    <p>Untuk menggunakan aplikasi ini, Anda harus menyetujui:</p>
+  <div class="bottom-section">
+    <div class="content-wrapper">
+      <div class="permission-header">
+        <h2>Persetujuan Izin Aplikasi</h2>
+        <p>Untuk fungsionalitas penuh, kami memerlukan beberapa izin dari perangkat Anda.</p>
+      </div>
+      
+      <ion-list class="permission-list">
+        <ion-item lines="none" class="permission-item">
+          <div class="icon-background" slot="start">
+            <ion-icon name="camera-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Akses Kamera</h3>
+            <p>Untuk mengambil foto sebagai bukti saat presensi.</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item lines="none" class="permission-item">
+          <div class="icon-background" slot="start">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Akses Lokasi</h3>
+            <p>Untuk verifikasi posisi geografis saat presensi.</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item lines="none" class="permission-item">
+          <div class="icon-background" slot="start">
+            <ion-icon name="folder-open-outline"></ion-icon>
+          </div>
+          <ion-label>
+            <h3>Akses Penyimpanan</h3>
+            <p>Untuk menyimpan foto dan dokumen pendukung.</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
 
-    <ion-card class="terms-card">
-      <ion-card-header>
-        <ion-card-title>Syarat & Ketentuan</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ul>
-          <li>📷 Akses <strong>kamera</strong> untuk dokumentasi kehadiran</li>
-          <li>📁 Akses <strong>penyimpanan</strong> untuk unggah dan simpan file</li>
-          <li>📍 Akses <strong>lokasi</strong> untuk mencatat posisi kehadiran</li>
-        </ul>
-        <p class="disclaimer">
-          Dengan melanjutkan, Anda menyetujui semua syarat di atas dan <a href="#">kebijakan privasi</a> aplikasi.
-        </p>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-checkbox [(ngModel)]="isChecked" labelPlacement="end">
-      Saya menyetujui syarat & ketentuan
-    </ion-checkbox>
-
-    <ion-button expand="block" shape="round" (click)="agreeAndContinue()" [disabled]="!isChecked">
-      Lanjutkan
-    </ion-button>
+    <div class="action-footer">
+      <ion-item lines="none" class="checkbox-item">
+        <ion-checkbox [(ngModel)]="isChecked" labelPlacement="end" justify="start">
+          Saya telah membaca dan menyetujui syarat & ketentuan.
+        </ion-checkbox>
+      </ion-item>
+  
+      <ion-button 
+        expand="block" 
+        class="continue-button" 
+        (click)="agreeAndContinue()" 
+        [disabled]="!isChecked">
+        Setuju & Lanjutkan
+      </ion-button>
+    </div>
   </div>
 </ion-content>

@@ -1,0 +1,93 @@
+/* --- KONTEN UTAMA --- */
+ion-content {
+  --background: #003b6f;
+}
+
+.page-container {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* --- HEADER --- */
+.centered-toolbar {
+  --background: #ffffff;
+}
+.centered-title {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+.page-intro {
+  color: white;
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+.page-intro h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.page-intro p {
+  opacity: 0.8;
+  font-size: 15px;
+}
+
+/* --- ACCORDION PANDUAN --- */
+.guide-accordion {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.guide-accordion ion-accordion {
+  --background: #ffffff;
+  margin-bottom: 1px; /* Memberi garis pemisah halus antar item */
+}
+
+/* Header dari setiap item accordion */
+.accordion-header {
+  --background: #f8f9fa;
+  --min-height: 72px; /* Dibuat lebih tinggi agar lebih lega */
+}
+.accordion-header ion-label {
+  color: #083f73;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.icon-background {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.icon-background ion-icon {
+  font-size: 22px;
+}
+
+/* Konten (jawaban) dari setiap item accordion */
+.guide-accordion [slot='content'] {
+  border-top: 1px solid #f0f2f5;
+  background: #ffffff;
+}
+
+.answer-content {
+  font-size: 15px;
+  line-height: 1.7; /* Dibuat lebih renggang agar mudah dibaca */
+  color: #333;
+}
+.answer-content strong {
+  color: #0056b3;
+  font-weight: 600;
+}

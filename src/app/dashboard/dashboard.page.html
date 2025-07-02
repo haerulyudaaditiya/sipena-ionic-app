@@ -74,7 +74,7 @@
         <ion-row>
           <ion-col size="6" class="icon-col" (click)="goTo('presensi')">
             <div class="circle-icon">
-              <ion-icon name="alarm-outline"></ion-icon>
+              <ion-icon name="finger-print-outline"></ion-icon>
             </div>
             <p>Presensi</p>
           </ion-col>
@@ -103,26 +103,20 @@
     </ion-card>
 
     <ion-card class="info-card">
-      <!-- Tampilan ini akan muncul jika ADA pengumuman dari server -->
       <ion-item lines="none" *ngIf="latestAnnouncement">
-        <ion-icon
-          name="megaphone-outline"
-          slot="start"
-          color="primary"
-        ></ion-icon>
+        <div class="icon-background" slot="start">
+          <ion-icon name="megaphone-outline"></ion-icon>
+        </div>
         <ion-label>
           <h2>{{ latestAnnouncement.title }}</h2>
-          <!-- Menggunakan [innerHTML] penting agar format teks dari admin (seperti tebal/miring) bisa ditampilkan dengan benar -->
           <p class="ion-text-wrap" [innerHTML]="latestAnnouncement.content"></p>
         </ion-label>
       </ion-item>
 
-      <!-- Tampilan ini akan muncul jika TIDAK ADA pengumuman dari server -->
       <ion-item lines="none" *ngIf="!latestAnnouncement">
         <div class="icon-background" slot="start">
           <ion-icon name="information-circle-outline"></ion-icon>
         </div>
-
         <ion-label>
           <h2>Tidak Ada Pengumuman</h2>
           <p class="ion-text-wrap">

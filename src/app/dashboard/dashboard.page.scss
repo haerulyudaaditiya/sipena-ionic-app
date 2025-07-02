@@ -114,7 +114,7 @@ ion-header {
 /* --- Aturan yang sudah ada untuk info-card --- */
 .info-card {
   margin-top: 0;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 10px;
 }
 
@@ -199,7 +199,7 @@ ion-header {
 }
 
 .summary-card {
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 10px;
   margin-bottom: 16px;
   margin-top: 0px;
@@ -211,6 +211,7 @@ ion-header {
   --padding-start: 16px;
   --inner-padding-end: 16px;
   --min-height: 88px;
+  border-radius: 20px;
 }
 
 .summary-card .icon-background {

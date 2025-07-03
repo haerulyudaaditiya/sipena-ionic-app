@@ -6,15 +6,15 @@ const routes: Routes = [
   // DIUBAH: Rute awal kini diarahkan ke 'home' untuk menampilkan splash screen
   {
     path: '',
-    redirectTo: 'home', 
+    redirectTo: 'dashboard', 
     pathMatch: 'full'
   },
   
   // Rute untuk splash screen dan logika awal
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
+  // {
+  //   path: 'home',
+  //   loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  // },
   
   // --- Rute yang tidak dilindungi (Publik) ---
   {
@@ -93,11 +93,13 @@ const routes: Routes = [
   },
   {
     path: 'user-guide',
-    loadChildren: () => import('./user-guide/user-guide.module').then( m => m.UserGuidePageModule)
+    loadChildren: () => import('./user-guide/user-guide.module').then( m => m.UserGuidePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'about',
-    loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
+    loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule),
+    canActivate: [AuthGuard]
   },
 ];
 

@@ -5,8 +5,14 @@ const config: CapacitorConfig = {
   appName: 'SipenaApp',
   webDir: 'www',
   plugins: {
-    App: {
-      urlScheme: 'sipena',  // Custom scheme for your app (myapp://)
+    SplashScreen: {
+      launchShowDuration: 3000,
+      backgroundColor: "#003b6f",
+      showSpinner: false,
+      androidSpinnerStyle: "small",
+      iosSpinnerStyle: "small",
+      splashFullScreen: true,
+      splashImmersive: true,
     },
   },
 };

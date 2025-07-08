@@ -44,19 +44,19 @@
 
 - **Login**
   
-  ![Login](screenshots/login.jpeg)
+  <img src="screenshots/login.jpeg" alt="Login" width="300"/>
 
 - **Dasbor**
-  
-  ![Dashboard](screenshots/dashboard.jpeg)
+
+  <img src="screenshots/dashboard.jpeg" alt="Dashboard" width="300"/>
 
 - **Presensi**
-  
-  ![Presensi](screenshots/presensi.jpeg)
+
+  <img src="screenshots/presensi.jpeg" alt="Presensi" width="300"/>
 
 - **Riwayat**
-  
-  ![Riwayat](screenshots/riwayat.jpeg)
+
+  <img src="screenshots/riwayat.jpeg" alt="Riwayat" width="300"/>
 
 ---
 

@@ -81,7 +81,7 @@
 ### 1. Prasyarat
 
 - Node.js (versi LTS)
-- Ionic CLI (npm install -g @ionic/cli)
+- Ionic CLI
 - Android Studio (untuk build ke Android)
 
 ### 2. Clone Repositori
